@@ -183,10 +183,17 @@ td .content {
   overflow-y: auto;
 }
 
-#swipeBar {
-  height: 30px;  
-  background: #ddd;  
+#searchResults.minimized {
+  height: 30px; /* Or whatever height you want for the minimized bar */
+  overflow: hidden;
 }
+
+#swipeBar {
+  height: 30px;
+  background: #ddd; /* Or some other color that looks like a bar */
+  cursor: pointer;
+}
+
 
 
 /* Block Details Box */
