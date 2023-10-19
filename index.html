@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Search with JavaScript</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
+        integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+
+    <style>
+        .resultItem {
+            margin-bottom: 20px;
+        }
+
+        #togglePadding {
+            height: 50vh;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="content-container">
+        <div id="pageContent">
+
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search a block or address">
+                <div id="clearInputButton">×</div>
+            </div>
+
+            <div id="searchResults"></div>
+
+            <table id="blockTable">
+                <tbody>
+                    <!-- This tbody will be filled with JavaScript -->
+                </tbody>
+            </table>
+            <div id="togglePadding"></div>
+        </div>
+
+        <div id="blockDetails"></div>
+    </div>
+
+
+    <!-- ===================== JavaScript ===================== -->
+
+    <script src="data.js"></script> <!-- External JavaScript doc that stores tags for respective block numbers -->
+
+    <script>
+
+        let currentHighlightedCell = null; // remove highlight on result item click
+
+        function createTable() { // Generate the html table 9 columns wide
+            const tableBody = document.getElementById('blockTable').querySelector('tbody');
+            let html = '';
+            let counter = 0;
+
+            for (let i = 0; i < Math.ceil(2016 / 9); i++) {
+                html += '<tr>';
+                for (let j = 0; j < 9 && counter <= 2015; j++) {
+                    html += `<td id="block_${counter}"><div class="content">${counter}</div></td>`;
+                    counter++;
+                }
+                html += '</tr>';
+            }
+            tableBody.innerHTML = html;
+        }
+
+        //---------------
+
+        function removeHighlightFromAllCells() {
+            for (let i = 0; i <= 2015; i++) {
+                const cell = document.getElementById(`block_${i}`);
+                cell.classList.remove('highlightClick', 'highlightSearchResult');
+            }
+        }
+
+        //---------------
+
+        function highlightCellOnClick() {
+            for (let i = 0; i <= 2015; i++) {
+                const cell = document.getElementById(`block_${i}`);
+                cell.addEventListener('click', function () {
+                    if (currentHighlightedCell) {
+                        currentHighlightedCell.classList.remove('highlightClick');
+                    }
+                    cell.classList.add('highlightClick');
+                    currentHighlightedCell = cell;
+                    displayBlockDetails(i);
+
+                    scrollUpFromBehind(cell); //reveal cell location from behind block display div
+
+                });
+            }
+        }
+
+        // displays block details of a clicked cell 
+
+        function displayBlockDetails(blockNumber) {
+            const blockDetailDiv = document.getElementById('blockDetails');
+
+            // Ensure the div is visible before displaying details
+            blockDetailDiv.style.display = 'block';
+
+            ShiftUpTable(); // add margin to page bottom when blockDisplay div is open
+
+            const item = data.find(entry => entry.title === `${blockNumber}.bitmap`);
+
+            if (item) {
+                const tagsEntry = tagsData.find(entry => entry.block == blockNumber);
+                const tagsString = tagsEntry ? `<p><strong>Tags:</strong> ${tagsEntry.tags.join(', ')}</p>` : '';
+
+                blockDetailDiv.innerHTML = `
+                <span id="closeButton" style="cursor: pointer;">×</span>
+                <div class="resultItem">
+                <a href="${item.link}">${item.title}</a>
+                <p>${item.content}</p>
+                ${tagsString}
+                <p>Block Number Link: <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank">Link</a></p>  <!-- This line displays the blockNumber -->
+            </div>
+        `;
+
+
+                document.getElementById('closeButton').addEventListener('click', function () {
+                    document.getElementById('blockDetails').style.display = 'none';
+                    ShiftDownTable(); // Shift back down table upon close of BlockDetails div
+                });
+
+            } else {
+                blockDetailDiv.innerHTML = '<p>Details loading. No details available for this block.</p>';
+            }
+        }
+
+        //---------------
+
+        function noHighlightClearAllOnClick() { //if newly clicked cell has no highlight, then clear all highlights
+            for (let i = 0; i <= 2015; i++) {
+                const cell = document.getElementById(`block_${i}`);
+                cell.addEventListener('click', function () {
+                    // Check if the cell has a highlight (using classList.contains() or style.backgroundColor)
+                    if (!cell.classList.contains('highlightSearchResult') && cell.style.backgroundColor !== 'green') {
+                        removeHighlightFromAllCells()
+                    }
+                });
+            }
+        }
+
+        // Initializing functions
+        createTable();
+        noHighlightClearAllOnClick()
+        highlightCellOnClick();
+
+        ////========================================
+
+        const data = []; // Empty at the start
+
+        const trac = io("https://bitmap.trac.network", {
+            autoConnect: true,
+            reconnection: true,
+            reconnectionDelay: 500,
+            reconnectionDelayMax: 500,
+            randomizationFactor: 0
+        });
+
+        trac.on('response', function (msg) { // Obtain ownerOf from the id of a block number
+            if (msg.func === 'inscribedBitmaps') {
+                for (let block in msg.result) {
+                    if (msg.result[block] && msg.result[block].id) {
+                        trac.emit('get', {
+                            func: 'ownerOf',
+                            args: [msg.result[block].id],
+                            call_id: block
+                        });
+                    }
+                }
+            } else if (msg.func === 'ownerOf' && msg.result && msg.result.address) { // Once ownerOf is obtained the title, content and link are added tot he array
+                data.push({
+                    title: `${msg.call_id}.bitmap`,
+                    content: `Owner Address: ${msg.result.address}`,
+                    link: '#'  // No real link provided, but you can link to more info if available.
+                });
+            }
+        });
+
+        const CHUNK_SIZE = 200;
+        for (let i = 0; i <= 2015; i += CHUNK_SIZE) {
+            let end = Math.min(i + CHUNK_SIZE - 1, 2015);
+            let blocks = [];
+            for (let j = i; j <= end; j++) {
+                blocks.push(j);
+            }
+            trac.emit('get', {
+                func: 'inscribedBitmaps',
+                args: [blocks],
+                call_id: ''
+            });
+        }
+
+        //-----------------
+
+        function getCellForBlock(blockNumber) { // Utility function to map block number to its cell
+            return document.getElementById(`block_${blockNumber}`);
+        }
+
+        //---------------------may not be needed. replaced by 1/2 scrolls below
+
+        function scrollToBlock(blockNumber) {
+            const cell = getCellForBlock(blockNumber);
+            if (cell) {
+                cell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        //---------------------scrolls 1/2 avail screen on search result
+
+        function scrollToSearchResult(blockNumber) {
+            const cell = getCellForBlock(blockNumber);
+            const searchResultsHeight = document.getElementById('searchResults').offsetHeight;
+
+            if (cell) {
+                const rect = cell.getBoundingClientRect();
+                const scrollPosition = rect.top + window.pageYOffset - ((window.innerHeight - searchResultsHeight) / 2);
+                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+            }
+        }
+
+        //---------------scrolls 1/2 avail screen on result item click
+
+        function scrollToResultItem(blockNumber) {
+            const cell = getCellForBlock(blockNumber);
+            const blockDetailsHeight = document.getElementById('blockDetails').offsetHeight;
+
+            if (cell) {
+                const rect = cell.getBoundingClientRect();
+                const scrollPosition = rect.top + window.pageYOffset - ((window.innerHeight - blockDetailsHeight) / 2);
+                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+            }
+        }
+
+
+        //--------------------
+
+        function highlightBlock(item) {
+            if (!item || !item.title) return;
+
+            const blockNumber = item.title.split(".")[0];
+            const cell = getCellForBlock(blockNumber);
+            if (cell) {
+                cell.classList.add('highlightSearchResult');  // Add the highlightSearchResult class to the cell
+            }
+
+            // ... any other logic specific to highlighting the block ...
+        }
+
+        //--------------------
+
+        function performSearch() {
+            removeHighlightFromAllCells(); // Reset highlights
+            document.getElementById('blockDetails').style.display = 'none'; // hide block details from cell click
+
+            const query = document.getElementById('searchInput').value.toLowerCase();
+
+            // Check if the search query is empty or just whitespace
+            if (!query.trim()) {
+                return;  // Exit the function early if the condition is met
+            }
+
+            const tokens = query.split(' ').filter(token => token.trim() !== '');
+            const resultsDiv = document.getElementById('searchResults');
+
+            // Initialize results Html with an empty string for now
+            let resultsHtml = '';
+
+            for (let item of data) {
+                const titleMatches = tokens.every(token => item.title.toLowerCase().includes(token));
+                const contentMatches = query.length > 7 && tokens.every(token => item.content.toLowerCase().includes(token));
+                const tagEntry = tagsData.find(entry => entry.block == item.title.split(".")[0]);
+                const tagMatches = tagEntry ? tokens.some(token => tagEntry.tags.map(tag => tag.toLowerCase()).includes(token)) : false;
+
+                if (titleMatches || contentMatches || tagMatches) {
+                    highlightBlock(item);
+
+                    const blockNumber = item.title.split(".")[0];
+                    document.getElementById(`block_${blockNumber}`).classList.add('highlightSearchResult');
+                    const tagsString = tagEntry ? `<p><strong>Tags:</strong> ${tagEntry.tags.join(', ')}</p>` : '';
+
+                    resultsHtml += `
+            <div class="resultItem">
+                <a href="${item.link}">${item.title}</a>
+                <p>${item.content}</p>
+                ${tagsString}
+            </div>
+            `;
+                }
+            }
+
+            if (resultsHtml) { // After the loop, check if any results were added.
+                resultsHtml = '<h2>Results</h2>' + resultsHtml;  // If there were results, prepend the title.
+            } else {
+                resultsHtml = '<p>Sorry, no results found.</p>'; // If no results, display the error message.
+            }
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = resultsHtml; // Display the results
+
+            // Add click event listeners to result items
+            document.querySelectorAll('.resultItem').forEach(itemDiv => {
+                itemDiv.addEventListener('click', function () {
+                    const blockNumber = this.querySelector('a').textContent.split('.')[0];
+                    displayBlockDetails(blockNumber);
+
+                    // Remove the highlight from the previously highlighted cell
+                    if (currentHighlightedCell) {
+                        currentHighlightedCell.classList.remove('highlightClick');
+                    }
+
+                    // Highlight the clicked result's block in the table with a red background
+                    const cell = getCellForBlock(blockNumber);
+                    if (cell) {
+                        cell.classList.add('highlightClick');
+                        currentHighlightedCell = cell;  // Update the currentHighlightedCell variable
+                    }
+
+
+                    // Scroll to the clicked result's block in the table
+                    scrollToResultItem(blockNumber);
+                });
+            });
+
+            // Scroll to the first search result
+            if (resultsHtml) {
+                const firstBlockNumber = resultsDiv.querySelector('.resultItem a').textContent.split('.')[0];
+                scrollToSearchResult(firstBlockNumber);
+            }
+
+            // The rest of the logic that was inside the loop:
+            // Add click event listeners, scroll to first result, etc.
+            //...
+        }
+
+
+
+        // function to calculate the distance from the viewport's bottom for calculating screen shift
+        function distanceFromViewportBottom(element) {
+            const rect = element.getBoundingClientRect();
+            return window.innerHeight - rect.bottom;
+        }
+
+        // Scroll to center the clicked cell within the remaining space above the block details div
+        function scrollUpFromBehind(cell) {
+            const blockDetailsDiv = document.getElementById('blockDetails');
+
+            // Get its height
+            const blockDetailsHeight = blockDetailsDiv.offsetHeight;
+
+            // Calculate the position to center the cell in the space above blockDetailsHeight
+            const rect = cell.getBoundingClientRect();
+            const availableSpaceAboveBlockDetails = window.innerHeight - blockDetailsHeight;
+            const scrollPosition = rect.top + window.pageYOffset - ((availableSpaceAboveBlockDetails - rect.height) / 2);
+
+            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+        }
+
+
+
+
+        // Shift the page content up by the height of the blockDetailDiv using the toggle padding div (50% viewport height)
+        function ShiftUpTable(clickedCell) {
+            const togglePadding = document.getElementById('togglePadding');
+            togglePadding.style.display = `block`;
+        }
+
+        // shift page content back down
+        function ShiftDownTable() {
+            const togglePadding = document.getElementById('togglePadding');
+            togglePadding.style.display = 'none';  // Reset the transform
+        }
+
+        document.getElementById('searchInput').addEventListener('keydown', function (event) { //Pressing enter submits query
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        //Show clear input "x" button when the user types in the search bar
+
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const clearButton = document.getElementById('clearInputButton');
+            if (this.value.trim()) {
+                clearButton.style.display = 'block';
+            } else {
+                clearButton.style.display = 'none';
+            }
+        });
+
+
+        // clear input function and highlights on click of "x" next to search bar       
+        function clearInput() {
+            document.getElementById('searchInput').value = '';
+
+            // Remove highlights and searched-block class from all cells
+            removeHighlightFromAllCells();
+
+            document.getElementById('searchResults').style.display = 'none'; // hide search results list
+            document.getElementById('blockDetails').style.display = 'none'; // hide block details from cell click
+            document.getElementById('clearInputButton').style.display = 'none'; // hide the clear button after it's clicked
+
+        }
+
+
+
+        // document.getElementById('searchButton').addEventListener('click', performSearch); // event listener for search button click - not used
+        document.getElementById('clearInputButton').addEventListener('click', clearInput); // event listener "x" button next to search bar
+
+        // document.getElementById('searchInput').addEventListener('keyup', performSearch); //commented-out keyup to initiate search
+
+
+        //Swipe gestures
+        const searchResultsDiv = document.getElementById('searchResults');
+        const hammer = new Hammer(searchResultsDiv);
+
+        // Enable vertical panning
+        hammer.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
+
+        let startY = 0; // initial position when panning starts
+
+        hammer.on('panstart', (ev) => {
+            startY = ev.center.y;  // set the starting Y position when pan starts
+        });
+
+        hammer.on('panmove', (ev) => {
+            const deltaY = ev.center.y - startY; // distance moved in Y direction
+            if (deltaY > 0) {  // ensure the movement is in the downward direction
+                searchResultsDiv.style.transform = `translateY(${deltaY}px)`;
+            }
+        });
+
+        hammer.on('panend', (ev) => {
+            const deltaY = ev.center.y - startY;
+            if (deltaY > window.innerHeight * 0.2) {  // if user moved more than half the screen height
+                searchResultsDiv.style.display = 'none';  // hide the div
+            } else {
+                // reset to original position
+                searchResultsDiv.style.transform = `translateY(0)`;
+            }
+        });
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
