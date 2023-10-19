@@ -9,6 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
         integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+
     <style>
         .resultItem {
             margin-bottom: 20px;
@@ -31,10 +33,7 @@
                 <div id="clearInputButton">×</div>
             </div>
 
-
-
             <div id="searchResults"></div>
-
 
             <table id="blockTable">
                 <tbody>
@@ -94,13 +93,12 @@
                     currentHighlightedCell = cell;
                     displayBlockDetails(i);
 
-                    scrollIfNeeded(cell);
-                
+                    scrollUpFromBehind(cell); //reveal cell location from behind block display div
+
                 });
             }
         }
 
-        //---------------
         // displays block details of a clicked cell 
 
         function displayBlockDetails(blockNumber) {
@@ -218,31 +216,31 @@
             }
         }
 
-//---------------------scrolls 1/2 avail screen on search result
+        //---------------------scrolls 1/2 avail screen on search result
 
         function scrollToSearchResult(blockNumber) {
-    const cell = getCellForBlock(blockNumber);
-    const searchResultsHeight = document.getElementById('searchResults').offsetHeight;
+            const cell = getCellForBlock(blockNumber);
+            const searchResultsHeight = document.getElementById('searchResults').offsetHeight;
 
-    if (cell) {
-        const rect = cell.getBoundingClientRect();
-        const scrollPosition = rect.top + window.pageYOffset - ((window.innerHeight - searchResultsHeight) / 2);
-        window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-    }
-}
+            if (cell) {
+                const rect = cell.getBoundingClientRect();
+                const scrollPosition = rect.top + window.pageYOffset - ((window.innerHeight - searchResultsHeight) / 2);
+                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+            }
+        }
 
-//---------------scrolls 1/2 avail screen on result item click
+        //---------------scrolls 1/2 avail screen on result item click
 
-function scrollToResultItem(blockNumber) {
-    const cell = getCellForBlock(blockNumber);
-    const searchResultsHeight = document.getElementById('blockDetails').offsetHeight;
+        function scrollToResultItem(blockNumber) {
+            const cell = getCellForBlock(blockNumber);
+            const blockDetailsHeight = document.getElementById('blockDetails').offsetHeight;
 
-    if (cell) {
-        const rect = cell.getBoundingClientRect();
-        const scrollPosition = rect.top + window.pageYOffset - ((window.innerHeight - searchResultsHeight) / 2);
-        window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-    }
-}
+            if (cell) {
+                const rect = cell.getBoundingClientRect();
+                const scrollPosition = rect.top + window.pageYOffset - ((window.innerHeight - blockDetailsHeight) / 2);
+                window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+            }
+        }
 
 
         //--------------------
@@ -262,14 +260,8 @@ function scrollToResultItem(blockNumber) {
         //--------------------
 
         function performSearch() {
-
-            removeHighlightFromAllCells() // Reset highlights
+            removeHighlightFromAllCells(); // Reset highlights
             document.getElementById('blockDetails').style.display = 'none'; // hide block details from cell click
-
-            // Reset highlights
-            //for (let i = 0; i <= 2015; i++) {
-            //    document.getElementById(`block_${i}`).style.backgroundColor = '';
-            //}
 
             const query = document.getElementById('searchInput').value.toLowerCase();
 
@@ -281,70 +273,81 @@ function scrollToResultItem(blockNumber) {
             const tokens = query.split(' ').filter(token => token.trim() !== '');
             const resultsDiv = document.getElementById('searchResults');
 
+            // Initialize results Html with an empty string for now
             let resultsHtml = '';
 
             for (let item of data) {
                 const titleMatches = tokens.every(token => item.title.toLowerCase().includes(token));
-                const contentMatches = query.length > 7 && tokens.every(token => item.content.toLowerCase().includes(token)); // Only match content if query length > 7
-
-                const tagEntry = tagsData.find(entry => entry.block == item.title.split(".")[0]);  // Assuming title is "<number>.bitmap"
+                const contentMatches = query.length > 7 && tokens.every(token => item.content.toLowerCase().includes(token));
+                const tagEntry = tagsData.find(entry => entry.block == item.title.split(".")[0]);
                 const tagMatches = tagEntry ? tokens.some(token => tagEntry.tags.map(tag => tag.toLowerCase()).includes(token)) : false;
 
                 if (titleMatches || contentMatches || tagMatches) {
                     highlightBlock(item);
 
-                    if (titleMatches || contentMatches || tagMatches) {
-                        const blockNumber = item.title.split(".")[0];
-                        document.getElementById(`block_${blockNumber}`).classList.add('highlightSearchResult');
-                        const tagsString = tagEntry ? `<p><strong>Tags:</strong> ${tagEntry.tags.join(', ')}</p>` : '';  // If tags exist, convert them to a string. If not, set to empty.
+                    const blockNumber = item.title.split(".")[0];
+                    document.getElementById(`block_${blockNumber}`).classList.add('highlightSearchResult');
+                    const tagsString = tagEntry ? `<p><strong>Tags:</strong> ${tagEntry.tags.join(', ')}</p>` : '';
 
-                        resultsHtml += `
+                    resultsHtml += `
             <div class="resultItem">
                 <a href="${item.link}">${item.title}</a>
                 <p>${item.content}</p>
                 ${tagsString}
             </div>
             `;
-                    }
                 }
-
-                // Ensure the searchResults div is visible before displaying results
-                resultsDiv.style.display = 'block';
-
-                resultsDiv.innerHTML = resultsHtml; // Display the results
-
-                // Add click event listeners to result items
-                document.querySelectorAll('.resultItem').forEach(itemDiv => {
-                    itemDiv.addEventListener('click', function () {
-                        const blockNumber = this.querySelector('a').textContent.split('.')[0];
-                        displayBlockDetails(blockNumber);
-
-                        // Remove the highlight from the previously highlighted cell
-                        if (currentHighlightedCell) {
-                            currentHighlightedCell.classList.remove('highlightClick');
-                        }
-
-                        // Highlight the clicked result's block in the table with a red background
-                        const cell = getCellForBlock(blockNumber);
-                        if (cell) {
-                            cell.classList.add('highlightClick');
-                            currentHighlightedCell = cell;  // Update the currentHighlightedCell variable
-                        }
-
-
-                        // Scroll to the clicked result's block in the table
-                        scrollToResultItem(blockNumber);
-                    });
-                });
-
-                // Scroll to the first search result
-                if (resultsHtml) {
-                    const firstBlockNumber = resultsDiv.querySelector('.resultItem a').textContent.split('.')[0];
-                    scrollToSearchResult(firstBlockNumber);
-                }
-
             }
+
+            if (resultsHtml) { // After the loop, check if any results were added.
+                resultsHtml = '<div id="swipeBar"><img src="down-icon.png"></div>' + resultsHtml;  // If there were results, prepend the title.
+            } else {
+                resultsHtml = '<p>Sorry, no results found.</p>'; // If no results, display the error message.
+            }
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = resultsHtml; // Display the results
+
+            // minimize search results
+            const swipeBar = document.getElementById('swipeBar');
+            swipeBar.addEventListener('click', toggleSearchResults);
+
+
+            // Add click event listeners to result items
+            document.querySelectorAll('.resultItem').forEach(itemDiv => {
+                itemDiv.addEventListener('click', function () {
+                    const blockNumber = this.querySelector('a').textContent.split('.')[0];
+                    displayBlockDetails(blockNumber);
+
+                    // Remove the highlight from the previously highlighted cell
+                    if (currentHighlightedCell) {
+                        currentHighlightedCell.classList.remove('highlightClick');
+                    }
+
+                    // Highlight the clicked result's block in the table with a red background
+                    const cell = getCellForBlock(blockNumber);
+                    if (cell) {
+                        cell.classList.add('highlightClick');
+                        currentHighlightedCell = cell;  // Update the currentHighlightedCell variable
+                    }
+
+
+                    // Scroll to the clicked result's block in the table
+                    scrollToResultItem(blockNumber);
+                });
+            });
+
+            // Scroll to the first search result
+            if (resultsHtml) {
+                const firstBlockNumber = resultsDiv.querySelector('.resultItem a').textContent.split('.')[0];
+                scrollToSearchResult(firstBlockNumber);
+            }
+
+            // The rest of the logic that was inside the loop:
+            // Add click event listeners, scroll to first result, etc.
+            //...
         }
+
+
 
         // function to calculate the distance from the viewport's bottom for calculating screen shift
         function distanceFromViewportBottom(element) {
@@ -352,17 +355,28 @@ function scrollToResultItem(blockNumber) {
             return window.innerHeight - rect.bottom;
         }
 
-        // Scroll up from bottom of viewport by 200px
-        function scrollIfNeeded(cell) {
-    if (distanceFromViewportBottom(cell) < 200) {
-        window.scrollBy(0, 200);  // Scroll up by 200 pixels
-    }
-}
+        // Scroll to center the clicked cell within the remaining space above the block details div
+        function scrollUpFromBehind(cell) {
+            const blockDetailsDiv = document.getElementById('blockDetails');
 
- // Shift the page content up by the height of the blockDetailDiv (200 pixels)
+            // Get its height
+            const blockDetailsHeight = blockDetailsDiv.offsetHeight;
+
+            // Calculate the position to center the cell in the space above blockDetailsHeight
+            const rect = cell.getBoundingClientRect();
+            const availableSpaceAboveBlockDetails = window.innerHeight - blockDetailsHeight;
+            const scrollPosition = rect.top + window.pageYOffset - ((availableSpaceAboveBlockDetails - rect.height) / 2);
+
+            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+        }
+
+
+
+
+        // Shift the page content up by the height of the blockDetailDiv using the toggle padding div (50% viewport height)
         function ShiftUpTable(clickedCell) {
             const togglePadding = document.getElementById('togglePadding');
-            togglePadding.style.display = `block`;     
+            togglePadding.style.display = `block`;
         }
 
         // shift page content back down
@@ -402,12 +416,36 @@ function scrollToResultItem(blockNumber) {
 
         }
 
-
-
         // document.getElementById('searchButton').addEventListener('click', performSearch); // event listener for search button click - not used
         document.getElementById('clearInputButton').addEventListener('click', clearInput); // event listener "x" button next to search bar
 
+        // hide keyboard after user submits address
+
+        const searchInput = document.getElementById('searchInput');
+
+        searchInput.addEventListener('keyup', function (event) {
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                searchInput.blur();  // This will remove focus from the input and close the keyboard
+            }
+        });
+
+
         // document.getElementById('searchInput').addEventListener('keyup', performSearch); //commented-out keyup to initiate search
+
+        // hide search results list on click
+        function toggleSearchResults() {
+            const searchResultsDiv = document.getElementById('searchResults');
+
+            if (searchResultsDiv.classList.contains('minimized')) {
+                // If it's currently minimized, restore it
+                searchResultsDiv.classList.remove('minimized');
+            } else {
+                // If it's not minimized, minimize it
+                searchResultsDiv.classList.add('minimized');
+            }
+        }
+
+
     </script>
 
 </body>
