@@ -307,6 +307,8 @@
             resultsDiv.style.display = 'block';
             resultsDiv.innerHTML = resultsHtml; // Display the results
 
+            addSwipeFunctionality();
+
             // Add click event listeners to result items
             document.querySelectorAll('.resultItem').forEach(itemDiv => {
                 itemDiv.addEventListener('click', function () {
@@ -429,34 +431,37 @@
 
 
         //Swipe gestures
-        const swipeBarDiv = document.getElementById('swipeBar');
-        const hammer = new Hammer(swipeBarDiv);
+        function addSwipeFunctionality() {
+            const resultsDiv = document.getElementById('searchResults');
+            const swipeBarDiv = document.getElementById('swipeBar');
+            const hammer = new Hammer(swipeBarDiv);
 
-        // Enable vertical panning
-        hammer.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
+            // Enable vertical panning
+            hammer.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
 
-        let startY = 0; // initial position when panning starts
+            let initialY = 0; // Store the initial position of the searchResults div
+            let startY = 0; // initial position when panning starts
 
-        hammer.on('panstart', (ev) => {
-            startY = ev.center.y;  // set the starting Y position when pan starts
-        });
+            hammer.on('panstart', (ev) => {
+                startY = ev.center.y;
+                initialY = parseFloat(getComputedStyle(resultsDiv).transform.split(",")[5]) || 0; // Fetch current translateY
+            });
 
-        hammer.on('panmove', (ev) => {
-            const deltaY = ev.center.y - startY; // distance moved in Y direction
-            if (deltaY > 0) {  // ensure the movement is in the downward direction
-                swipeBarDiv.style.transform = `translateY(${deltaY}px)`;
-            }
-        });
+            hammer.on('panmove', (ev) => {
+                const deltaY = ev.center.y - startY;
+                const newY = initialY + deltaY;
+                resultsDiv.style.transform = `translateY(${newY}px)`;
+            });
 
-        hammer.on('panend', (ev) => {
-            const deltaY = ev.center.y - startY;
-            if (deltaY > window.innerHeight * 0.2) {  // if user moved more than half the screen height
-                swipeBarDiv.style.display = 'none';  // hide the div
-            } else {
-                // reset to original position
-                swipeBarDiv.style.transform = `translateY(0)`;
-            }
-        });
+            hammer.on('panend', (ev) => {
+                const deltaY = ev.center.y - startY;
+                if (deltaY > window.innerHeight * 0.2) {
+                    resultsDiv.style.transform = `translateY(calc(100vh - 50px))`;  // push it just below the visible area
+                } else {
+                    resultsDiv.style.transform = 'translateY(0)';
+                }
+            });
+        }
 
 
 
