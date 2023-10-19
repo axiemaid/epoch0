@@ -181,7 +181,7 @@ td .content {
   z-index: 1000; /* To ensure it's always on top. */
   height: 50vh;
   overflow-y: auto;
-  transition: height 0.3s ease-in-out;  /* Adjust the duration (0.3s) as needed */
+  /*transition: height 0.3s ease-in-out;*/  /* Adjust the duration (0.3s) as needed */
 
 }
 
