@@ -53,6 +53,8 @@
 
     <script>
 
+        let currentHighlightedCell = null; // remove highlight on result item click
+
         function createTable() { // Generate the html table 9 columns wide
             const tableBody = document.getElementById('blockTable').querySelector('tbody');
             let html = '';
@@ -69,9 +71,8 @@
             tableBody.innerHTML = html;
         }
 
-        // ============== Table Cell Highlights ==============
+        //---------------
 
-        // remove highlights from all cells
         function removeHighlightFromAllCells() {
             for (let i = 0; i <= 2015; i++) {
                 const cell = document.getElementById(`block_${i}`);
@@ -79,10 +80,8 @@
             }
         }
 
-        // Stores initial cell highlight state
-        let currentHighlightedCell = null;
+        //---------------
 
-        // A )Highlights and B) scrolls to cell on table cell click
         function highlightCellOnClick() {
             for (let i = 0; i <= 2015; i++) {
                 const cell = document.getElementById(`block_${i}`);
@@ -94,7 +93,7 @@
                     currentHighlightedCell = cell;
                     displayBlockDetails(i);
 
-                    scrollUpFromBehind(cell); //scroll up from behind blockDisplay div
+                    scrollUpFromBehind(cell); //reveal cell location from behind block display div
 
                 });
             }
@@ -300,11 +299,15 @@
                         currentHighlightedCell = cell;  // Update the currentHighlightedCell variable
                     }
 
-                    scrollToFirstSearchResult(resultsDiv); // Scroll to the first searchResult on search
 
-                    scrollToResultItem(blockNumber); // Scroll to the the clicked searchResult item
+                    // Scroll to the clicked result's block in the table
+                    scrollToResultItem(blockNumber);
+
                 });
             });
+
+            // Scroll to the first search result
+            scrollToFirstSearchResult(resultsDiv);
 
             // The rest of the logic that was inside the loop:
             // Add click event listeners, scroll to first result, etc.
