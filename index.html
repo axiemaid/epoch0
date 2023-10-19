@@ -336,6 +336,9 @@
 
         // Scrolls to 1/2 avail screen on searchResult
         function scrollToSearchResult(blockNumber) {
+
+            document.activeElement.blur();
+            
             const cell = getCellForBlock(blockNumber);
             const searchResultsHeight = document.getElementById('searchResults').offsetHeight;
 
