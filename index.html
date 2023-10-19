@@ -335,16 +335,33 @@
         }
 
         // Scrolls to 1/2 avail screen on searchResult
+    
+
         function scrollToSearchResult(blockNumber) {
     const cell = getCellForBlock(blockNumber);
-    
-    if (cell) {
-        const rect = cell.getBoundingClientRect();
-        const quarterViewportHeight = window.innerHeight * 0.25;
-        const scrollPosition = rect.top + window.pageYOffset - quarterViewportHeight;
-        window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+    if (!cell) return;
+
+    // Scroll the cell into view
+    cell.scrollIntoView(true);
+
+    const cellPosition = cell.getBoundingClientRect();
+    const desiredOffset = window.innerHeight * 0.4;
+
+    // Check if the top of the cell is above the desired 40% mark
+    if (cellPosition.top < desiredOffset) {
+        const difference = desiredOffset - cellPosition.top;
+        window.scrollBy(0, -difference);
+    } else {
+        // Calculate the remaining space below the item to the bottom of the page
+        const spaceBelow = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+        
+        // Calculate the actual offset to scroll by (either the desired offset or the space below, whichever is smaller)
+        const actualOffset = Math.min(desiredOffset, spaceBelow);
+        
+        window.scrollBy(0, -actualOffset);
     }
 }
+
 
 
         // Scrolls to 1/2 avail screen on searchResult item click
