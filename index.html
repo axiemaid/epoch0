@@ -411,10 +411,17 @@
 
         }
 
-
-
         // document.getElementById('searchButton').addEventListener('click', performSearch); // event listener for search button click - not used
         document.getElementById('clearInputButton').addEventListener('click', clearInput); // event listener "x" button next to search bar
+
+        // hide keyboard after user submits address
+
+        document.getElementById('searchInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                highlightCells();
+                this.blur();  // This will blur (deselect) the input field
+            }
+        });
 
         // document.getElementById('searchInput').addEventListener('keyup', performSearch); //commented-out keyup to initiate search
 
