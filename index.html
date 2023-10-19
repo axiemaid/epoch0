@@ -9,8 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
         integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-
     <style>
         .resultItem {
             margin-bottom: 20px;
@@ -300,17 +298,12 @@
             }
 
             if (resultsHtml) { // After the loop, check if any results were added.
-                resultsHtml = '<div id="swipeBar"><img src="down-icon.png"></div>' + resultsHtml;  // If there were results, prepend the title.
+                resultsHtml = '<h2>Results</h2>' + resultsHtml;  // If there were results, prepend the title.
             } else {
                 resultsHtml = '<p>Sorry, no results found.</p>'; // If no results, display the error message.
             }
             resultsDiv.style.display = 'block';
             resultsDiv.innerHTML = resultsHtml; // Display the results
-
-            // minimize search results
-            const swipeBar = document.getElementById('swipeBar');
-            swipeBar.addEventListener('click', toggleSearchResults);
-
 
             // Add click event listeners to result items
             document.querySelectorAll('.resultItem').forEach(itemDiv => {
@@ -416,30 +409,12 @@
 
         }
 
+
+
         // document.getElementById('searchButton').addEventListener('click', performSearch); // event listener for search button click - not used
         document.getElementById('clearInputButton').addEventListener('click', clearInput); // event listener "x" button next to search bar
 
-        // hide keyboard after user submits address
-
-       
-
-
         // document.getElementById('searchInput').addEventListener('keyup', performSearch); //commented-out keyup to initiate search
-
-        // hide search results list on click
-        function toggleSearchResults() {
-            const searchResultsDiv = document.getElementById('searchResults');
-
-            if (searchResultsDiv.classList.contains('minimized')) {
-                // If it's currently minimized, restore it
-                searchResultsDiv.classList.remove('minimized');
-            } else {
-                // If it's not minimized, minimize it
-                searchResultsDiv.classList.add('minimized');
-            }
-        }
-
-
     </script>
 
 </body>
