@@ -300,7 +300,7 @@
             }
 
             if (resultsHtml) { // After the loop, check if any results were added.
-                resultsHtml = '<h2>Results</h2>' + resultsHtml;  // If there were results, prepend the title.
+                resultsHtml = '<div id="swipeBar"></div>' + resultsHtml;  // If there were results, prepend the title.
             } else {
                 resultsHtml = '<p>Sorry, no results found.</p>'; // If no results, display the error message.
             }
@@ -429,8 +429,8 @@
 
 
         //Swipe gestures
-        const searchResultsDiv = document.getElementById('searchResults');
-        const hammer = new Hammer(searchResultsDiv);
+        const swipeBarDiv = document.getElementById('swipeBar');
+        const hammer = new Hammer(swipeBarDiv);
 
         // Enable vertical panning
         hammer.get('pan').set({ direction: Hammer.DIRECTION_VERTICAL });
@@ -444,17 +444,17 @@
         hammer.on('panmove', (ev) => {
             const deltaY = ev.center.y - startY; // distance moved in Y direction
             if (deltaY > 0) {  // ensure the movement is in the downward direction
-                searchResultsDiv.style.transform = `translateY(${deltaY}px)`;
+                swipeBarDiv.style.transform = `translateY(${deltaY}px)`;
             }
         });
 
         hammer.on('panend', (ev) => {
             const deltaY = ev.center.y - startY;
             if (deltaY > window.innerHeight * 0.2) {  // if user moved more than half the screen height
-                searchResultsDiv.style.display = 'none';  // hide the div
+                swipeBarDiv.style.display = 'none';  // hide the div
             } else {
                 // reset to original position
-                searchResultsDiv.style.transform = `translateY(0)`;
+                swipeBarDiv.style.transform = `translateY(0)`;
             }
         });
 
