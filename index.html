@@ -333,33 +333,15 @@
 
             window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
         }
-        /////
-
-        
-
-
-        let initialViewportHeight = window.innerHeight;
-
-window.addEventListener("resize", function() {
-    // This assumes that the keyboard is the primary reason for a resize
-    // You may need to add more conditions based on your app's behavior
-    if (window.innerHeight > initialViewportHeight) {
-        initialViewportHeight = window.innerHeight;
-    }
-});
-
-
-
-        //////
 
         // Scrolls to 1/2 avail screen on searchResult
         function scrollToSearchResult(blockNumber) {
     const cell = getCellForBlock(blockNumber);
-    const searchResultsHeight = document.getElementById('searchResults').offsetHeight;
-
+    
     if (cell) {
         const rect = cell.getBoundingClientRect();
-        const scrollPosition = rect.top + window.pageYOffset - ((initialViewportHeight - searchResultsHeight) / 2);
+        const quarterViewportHeight = window.innerHeight * 0.25;
+        const scrollPosition = rect.top + window.pageYOffset - quarterViewportHeight;
         window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
     }
 }
