@@ -29,7 +29,7 @@
         <div id="pageContent">
 
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search a block or address">
+                <input type="text" id="searchInput" placeholder="What are you looking for?">
                 <div id="clearInputButton">×</div>
             </div>
 
@@ -340,37 +340,30 @@
             const cell = getCellForBlock(blockNumber);
             if (!cell) return;
 
-            // Scroll the cell into view (remove this if you prefer controlling the entire scroll behavior)
-            cell.scrollIntoView(true);
+            cell.scrollIntoView(true); // Scroll the cell into view
 
             const cellPosition = cell.getBoundingClientRect();
-            const desiredOffset = window.innerHeight * 0.27;
+            const desiredOffset = window.innerHeight * 0.25;
 
-            // Calculate the current scroll position
-            const currentScrollPosition = window.scrollY || window.pageYOffset;
+            const currentScrollPosition = window.scrollY || window.pageYOffset; // Calculate the current scroll position
 
             let newScrollPosition;
 
-            // Check if the top of the cell is above the desired 25% mark
-            if (cellPosition.top < desiredOffset) {
+            if (cellPosition.top < desiredOffset) { // Check if the top of the cell is above the desired 25% mark
                 const difference = desiredOffset - cellPosition.top;
                 newScrollPosition = currentScrollPosition - difference;
             } else {
-                // Calculate the remaining space below the item to the bottom of the page
-                const spaceBelow = document.documentElement.scrollHeight - (currentScrollPosition + window.innerHeight);
+                const spaceBelow = document.documentElement.scrollHeight - (currentScrollPosition + window.innerHeight); // Calculate the remaining space below the item to the bottom of the page
 
-                // Determine the actual offset to scroll by
-                const actualOffset = Math.min(desiredOffset, spaceBelow);
+                const actualOffset = Math.min(desiredOffset, spaceBelow);  // Determine the actual offset to scroll by
                 newScrollPosition = currentScrollPosition + actualOffset;
             }
 
-            // Use scrollTo with smooth behavior
-            window.scrollTo({
+            window.scrollTo({ // Use scrollTo with smooth behavior
                 top: newScrollPosition,
                 behavior: 'smooth'
             });
         }
-
 
         // Scrolls to 1/2 avail screen on searchResult item click
         function scrollToResultItem(blockNumber) {
@@ -447,6 +440,7 @@
             document.getElementById('searchResults').style.display = 'none'; // Remove search results div
             document.getElementById('blockDetails').style.display = 'none'; // Remove block details from cell click
             document.getElementById('clearInputButton').style.display = 'none'; // hide the "x" button after it is clicked
+            ShiftDownTable();
         }
 
 
@@ -456,6 +450,7 @@
         function minimizeSearchResults() {
             const searchResultsDiv = document.getElementById('searchResults');
             searchResultsDiv.classList.add('minimized');
+            ShiftDownTable();
         }
 
         // show search results list on click

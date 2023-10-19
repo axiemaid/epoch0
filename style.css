@@ -95,7 +95,7 @@ body {
 #searchInput {
   padding: 10px 20px;
   /* Add some padding */
-  font-size: 1rem;
+  font-size: 1.05rem;
   /* Font size */
   background-color: white;
   /* Background color */
@@ -108,7 +108,7 @@ body {
 
 #clearInputButton {
   cursor: pointer;
-  font-size: 25px;
+  font-size: 1.85em;
   flex-shrink: 0;
   margin-right: 15px;
   position: relative;
@@ -127,7 +127,7 @@ body {
 /* Table */
 
 table {
-  margin: 80px auto 50px auto;
+  margin: 80px auto 20px auto;
   text-align: center;
   width: 100%;
   color: #222;
@@ -191,11 +191,14 @@ td .content {
 }
 
 #swipeBar img{
-  height: 15px;
+  height: 10px;
   cursor: pointer;
   margin-bottom: 20px;
 }
 
+#searchResults.minimized #swipeBar img {
+  transform: scaleY(-1);
+}
 
 
 /* Block Details Box */
