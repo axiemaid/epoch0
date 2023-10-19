@@ -300,7 +300,7 @@
             }
 
             if (resultsHtml) { // After the loop, check if any results were added.
-                resultsHtml = '<div id="swipeBar"></div>' + resultsHtml;  // If there were results, prepend the title.
+                resultsHtml = '<div id="swipeBar"><img src="down-icon.png"></div>' + resultsHtml;  // If there were results, prepend the title.
             } else {
                 resultsHtml = '<p>Sorry, no results found.</p>'; // If no results, display the error message.
             }
@@ -432,6 +432,7 @@
 
         // document.getElementById('searchInput').addEventListener('keyup', performSearch); //commented-out keyup to initiate search
 
+        // hide search results list on click
         function toggleSearchResults() {
             const searchResultsDiv = document.getElementById('searchResults');
 

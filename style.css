@@ -181,6 +181,8 @@ td .content {
   z-index: 1000; /* To ensure it's always on top. */
   height: 50vh;
   overflow-y: auto;
+  transition: height 0.3s ease-in-out;  /* Adjust the duration (0.3s) as needed */
+
 }
 
 #searchResults.minimized {
@@ -188,10 +190,10 @@ td .content {
   overflow: hidden;
 }
 
-#swipeBar {
-  height: 30px;
-  background: #ddd; /* Or some other color that looks like a bar */
+#swipeBar img{
+  height: 15px;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 
