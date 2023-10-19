@@ -335,33 +335,41 @@
         }
 
         // Scrolls to 1/2 avail screen on searchResult
-    
-
+        // Modified for Android virtual keyboard issues
         function scrollToSearchResult(blockNumber) {
-    const cell = getCellForBlock(blockNumber);
-    if (!cell) return;
+            const cell = getCellForBlock(blockNumber);
+            if (!cell) return;
 
-    // Scroll the cell into view
-    cell.scrollIntoView(true);
+            // Scroll the cell into view (remove this if you prefer controlling the entire scroll behavior)
+            cell.scrollIntoView(true);
 
-    const cellPosition = cell.getBoundingClientRect();
-    const desiredOffset = window.innerHeight * 0.25;
+            const cellPosition = cell.getBoundingClientRect();
+            const desiredOffset = window.innerHeight * 0.25;
 
-    // Check if the top of the cell is above the desired 40% mark
-    if (cellPosition.top < desiredOffset) {
-        const difference = desiredOffset - cellPosition.top;
-        window.scrollBy(0, -difference);
-    } else {
-        // Calculate the remaining space below the item to the bottom of the page
-        const spaceBelow = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
-        
-        // Calculate the actual offset to scroll by (either the desired offset or the space below, whichever is smaller)
-        const actualOffset = Math.min(desiredOffset, spaceBelow);
-        
-        window.scrollBy(0, -actualOffset);
-    }
-}
+            // Calculate the current scroll position
+            const currentScrollPosition = window.scrollY || window.pageYOffset;
 
+            let newScrollPosition;
+
+            // Check if the top of the cell is above the desired 25% mark
+            if (cellPosition.top < desiredOffset) {
+                const difference = desiredOffset - cellPosition.top;
+                newScrollPosition = currentScrollPosition - difference;
+            } else {
+                // Calculate the remaining space below the item to the bottom of the page
+                const spaceBelow = document.documentElement.scrollHeight - (currentScrollPosition + window.innerHeight);
+
+                // Determine the actual offset to scroll by
+                const actualOffset = Math.min(desiredOffset, spaceBelow);
+                newScrollPosition = currentScrollPosition + actualOffset;
+            }
+
+            // Use scrollTo with smooth behavior
+            window.scrollTo({
+                top: newScrollPosition,
+                behavior: 'smooth'
+            });
+        }
 
 
         // Scrolls to 1/2 avail screen on searchResult item click
