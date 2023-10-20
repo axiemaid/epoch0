@@ -193,6 +193,7 @@ td .content {
 .itemTitle {
   font-weight: 600;
   color: #333;
+  margin-top: 15px;
 }
 
 .itemAddress {
@@ -233,9 +234,21 @@ td .content {
   display: none; /* By default, it should be hidden. */
   z-index: 1000; /* To ensure it's always on top. */
   height: 50vh;
+  overflow-y: auto;
 }
+
+
 
 #pageContent {
   transition: transform 0.3s ease; /* Smooth transition for moving content */
 }
 
+.logo-list {
+  display: flex;
+  margin-top: 20px;
+}
+
+.blockdetaillogoicon {
+  width: 40px;
+  margin-right: 15px;
+}

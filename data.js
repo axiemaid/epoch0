@@ -13,7 +13,9 @@ const tagsData = [
         block: 91,
         tags: ["Block", "Runner", "Iman", "Podcast", "YouTube"],
         detail: ["Bitmap Valley"],
-        imageUrl: "iman.jpg" 
+        imageUrl: "images/blockrunner.png", 
+        YTUrl: "https://www.youtube.com/@TheBlockRunner",
+        YTimage: "logos/youtube-logo.png"
     },
     {
         block: 92,
@@ -28,7 +30,8 @@ const tagsData = [
     {
         block: 100,
         tags: ["Block", "Runner", "Iman", "Podcast", "YouTube"],
-        detail: ["Bitmap Valley"]
+        detail: ["Bitmap Valley"],
+        imageUrl: "images/iman.jpg" 
     },
     {
         block: 505,

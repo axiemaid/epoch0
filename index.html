@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
         integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        
+
     <style>
         #togglePadding {
             height: 50vh;
@@ -110,21 +110,34 @@
                 const tagsEntry = tagsData.find(entry => entry.block == blockNumber);
                 const tagsString = tagsEntry ? `<p><strong>Tags:</strong> ${tagsEntry.tags.join(', ')}</p>` : '';
 
- // Extract image URL from the tagsData entry
- let imageUrl = '';
-    if (tagsEntry && tagsEntry.imageUrl) {
-        imageUrl = tagsEntry.imageUrl;
-    }
+                // Extract image URL from the tagsData entry
+                let imageUrl = '';
+                if (tagsEntry && tagsEntry.imageUrl) {
+                    imageUrl = tagsEntry.imageUrl;
+                }
+
+                 // Extract YouTube from the tagsData entry
+                 let YTUrl = '';
+                if (tagsEntry && tagsEntry.YTUrl) {
+                    YTUrl = tagsEntry.YTUrl;
+                }
+
+                let YTimage = '';
+                if (tagsEntry && tagsEntry.YTimage) {
+                    YTimage = tagsEntry.YTimage;
+                }
 
                 blockDetailDiv.innerHTML = `
                 <span id="closeButton" style="cursor: pointer;">×</span>
                 <div class="resultItem">
-                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image">` : ''}  <!-- Embed the image in the HTML -->
-
+                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image">` : ''}
                     <div class="itemTitle">${item.title}</div>
                 <p>${item.content}</p>
                 ${tagsString}
-                <p>Block Number Link: <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank">Link</a></p>  <!-- This line displays the blockNumber -->
+                <div class="logo-list">
+                <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="logos/rcsv-logo.png" class="blockdetaillogoicon"></a>
+                <a href="${YTUrl}">${YTimage ? `<img src="${YTimage}" alt="" class="blockdetaillogoicon">` : ''}</a>
+                </div>
             </div>
         `;
 
@@ -258,11 +271,11 @@
                     document.getElementById(`block_${blockNumber}`).classList.add('highlightSearchResult');
                     const tagsString = tagEntry ? `<p><strong>Tags:</strong> ${tagEntry.tags.join(', ')}</p>` : '';
 
- // Extract the image URL from the tagsData entry
- let imageUrl = '';
-        if (tagEntry && tagEntry.imageUrl) {
-            imageUrl = tagEntry.imageUrl;
-        }
+                    // Extract the image URL from the tagsData entry
+                    let imageUrl = '';
+                    if (tagEntry && tagEntry.imageUrl) {
+                        imageUrl = tagEntry.imageUrl;
+                    }
 
                     resultsHtml += `
     <div class="resultItem">
@@ -277,7 +290,7 @@
             }
 
             if (resultsHtml) { // After the loop, check if any results were added.
-                resultsHtml = '<div id="swipeBar"><img src="down-icon.png"></div>' + resultsHtml;  // If there were results, prepend the title.
+                resultsHtml = '<div id="swipeBar"><img src="images/down-icon.png"></div>' + resultsHtml;  // If there were results, prepend the title.
             } else {
                 resultsHtml = '<p>Sorry, no results found.</p>'; // If no results, display the error message.
             }
