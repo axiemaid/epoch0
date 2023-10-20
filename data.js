@@ -12,7 +12,7 @@ const tagsData = [
         tags: ["9", "block9ine", "Blix", "music", "art", "nine", "block"],
         imageUrl: "images/9bitmap.jpg",
         TwitterUrl: "https://twitter.com/block9ine",
-        TwitterImage: "logos/X-logo.png"
+        TwitterImage: "logos/x-logo.png"
     },
     {
         block: 91,
@@ -22,7 +22,7 @@ const tagsData = [
         YTUrl: "https://www.youtube.com/@TheBlockRunner",
         YTimage: "logos/youtube-logo.png",
         TwitterUrl: "https://twitter.com/TheBlockRunner",
-        TwitterImage: "logos/X-logo.png"
+        TwitterImage: "logos/x-logo.png"
     },
     {
         block: 92,
