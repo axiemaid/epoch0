@@ -9,13 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
         integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-
+        
     <style>
-        .resultItem {
-            margin-bottom: 20px;
-        }
-
         #togglePadding {
             height: 50vh;
             display: none;
@@ -115,10 +110,18 @@
                 const tagsEntry = tagsData.find(entry => entry.block == blockNumber);
                 const tagsString = tagsEntry ? `<p><strong>Tags:</strong> ${tagsEntry.tags.join(', ')}</p>` : '';
 
+ // Extract image URL from the tagsData entry
+ let imageUrl = '';
+    if (tagsEntry && tagsEntry.imageUrl) {
+        imageUrl = tagsEntry.imageUrl;
+    }
+
                 blockDetailDiv.innerHTML = `
                 <span id="closeButton" style="cursor: pointer;">×</span>
                 <div class="resultItem">
-                <a href="${item.link}">${item.title}</a>
+                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image">` : ''}  <!-- Embed the image in the HTML -->
+
+                    <div class="itemTitle">${item.title}</div>
                 <p>${item.content}</p>
                 ${tagsString}
                 <p>Block Number Link: <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank">Link</a></p>  <!-- This line displays the blockNumber -->
@@ -181,8 +184,7 @@
             } else if (msg.func === 'ownerOf' && msg.result && msg.result.address) { // Once ownerOf is obtained the title, content and link are added tot he array
                 data.push({
                     title: `${msg.call_id}.bitmap`,
-                    content: `Owner Address: ${msg.result.address}`,
-                    link: '#'  // No real link provided, but you can link to more info if available.
+                    content: `Owner: ${msg.result.address}`,
                 });
             }
         });
@@ -256,13 +258,21 @@
                     document.getElementById(`block_${blockNumber}`).classList.add('highlightSearchResult');
                     const tagsString = tagEntry ? `<p><strong>Tags:</strong> ${tagEntry.tags.join(', ')}</p>` : '';
 
+ // Extract the image URL from the tagsData entry
+ let imageUrl = '';
+        if (tagEntry && tagEntry.imageUrl) {
+            imageUrl = tagEntry.imageUrl;
+        }
+
                     resultsHtml += `
-            <div class="resultItem">
-                <a href="${item.link}">${item.title}</a>
-                <p>${item.content}</p>
-                ${tagsString}
-            </div>
-            `;
+    <div class="resultItem">
+        ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image">` : ''}  <!-- Embed the image in the HTML -->
+
+        <div class="itemTitle">${item.title}</div>
+        <div class="itemAddress">${item.content}</div>
+        <div class=itemTags>${tagsString}</div>
+    </div>
+`;
                 }
             }
 
@@ -284,7 +294,7 @@
             // Add click event listeners to result items
             document.querySelectorAll('.resultItem').forEach(itemDiv => {
                 itemDiv.addEventListener('click', function () {
-                    const blockNumber = this.querySelector('a').textContent.split('.')[0];
+                    const blockNumber = this.querySelector('.itemTitle').textContent.split('.')[0];
                     displayBlockDetails(blockNumber);
 
                     // Remove the highlight from the previously highlighted cell
@@ -302,7 +312,6 @@
 
                     // Scroll to the clicked result's block in the table
                     scrollToResultItem(blockNumber);
-
                 });
             });
 
@@ -379,7 +388,7 @@
 
         // Scroll to the first search result
         function scrollToFirstSearchResult(resultsDiv) {
-            const firstResult = resultsDiv.querySelector('.resultItem a');
+            const firstResult = resultsDiv.querySelector('.resultItem .itemTitle');
             if (!firstResult) return;
 
             const firstBlockNumber = firstResult.textContent.split('.')[0];

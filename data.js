@@ -12,7 +12,8 @@ const tagsData = [
     {
         block: 91,
         tags: ["Block", "Runner", "Iman", "Podcast", "YouTube"],
-        detail: ["Bitmap Valley"]
+        detail: ["Bitmap Valley"],
+        imageUrl: "iman.jpg" 
     },
     {
         block: 92,

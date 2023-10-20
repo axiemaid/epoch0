@@ -175,19 +175,37 @@ td .content {
   right: 0; /* This will stretch the div across the full width of the page. */
   background-color: #f9f9f9; /* Optional: You can set a background color for better visibility. */
   border-top: 1px solid #e5e5e5; /* Optional: Adds a little border on top for distinction. */
-  padding: 20px; /* Optional: Adds a little space around the content. */
+  padding: 0 20px; /* Optional: Adds a little space around the content. */
   box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth. */
   display: none; /* By default, it should be hidden. */
   z-index: 1000; /* To ensure it's always on top. */
   height: 50vh;
   overflow-y: auto;
   /*transition: height 0.3s ease-in-out;*/  /* Adjust the duration (0.3s) as needed */
+}
 
+.resultItem {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5; 
+}
+
+.itemTitle {
+  font-weight: 600;
+  color: #333;
+}
+
+.itemAddress {
+  color :#666;
 }
 
 #searchResults.minimized {
-  height: 30px; /* Or whatever height you want for the minimized bar */
+  height: 50px; /* Or whatever height you want for the minimized bar */
   overflow: hidden;
+}
+
+#swipeBar {
+  padding-top: 20px;
 }
 
 #swipeBar img{
