@@ -127,16 +127,29 @@
                     YTimage = tagsEntry.YTimage;
                 }
 
+                // Extract Twitter from the tagsData entry
+                let TwitterUrl = '';
+                if (tagsEntry && tagsEntry.TwitterUrl) {
+                    TwitterUrl = tagsEntry.TwitterUrl;
+                }
+
+                let TwitterImage = '';
+                if (tagsEntry && tagsEntry.TwitterImage) {
+                    TwitterImage = tagsEntry.TwitterImage;
+                }
+
                 blockDetailDiv.innerHTML = `
-                <span id="closeButton" style="cursor: pointer;">×</span>
+                <div id="closeButton"><img src="images/down-icon.png"></div>
                 <div class="resultItem">
-                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image">` : ''}
+                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
                     <div class="itemTitle">${item.title}</div>
                 <p>${item.content}</p>
                 ${tagsString}
                 <div class="logo-list">
                 <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="logos/rcsv-logo.png" class="blockdetaillogoicon"></a>
-                <a href="${YTUrl}">${YTimage ? `<img src="${YTimage}" alt="" class="blockdetaillogoicon">` : ''}</a>
+                <a href="https://mscribe.io/block/${blockNumber}" target="_blank"><img src="logos/mscribe-logo.png" class="blockdetaillogoicon"></a>
+                <a href="${YTUrl}" target="_blank">${YTimage ? `<img src="${YTimage}" alt="" class="blockdetaillogoicon">` : ''}</a>
+                <a href="${TwitterUrl}" target="_blank">${TwitterImage ? `<img src="${TwitterImage}" alt="" class="blockdetaillogoicon">` : ''}</a>
                 </div>
             </div>
         `;
@@ -279,8 +292,7 @@
 
                     resultsHtml += `
     <div class="resultItem">
-        ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image">` : ''}  <!-- Embed the image in the HTML -->
-
+        ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
         <div class="itemTitle">${item.title}</div>
         <div class="itemAddress">${item.content}</div>
         <div class=itemTags>${tagsString}</div>
