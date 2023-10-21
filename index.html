@@ -15,6 +15,27 @@
             height: 50vh;
             display: none;
         }
+
+        .has-tag {
+            outline: 1px solid rgb(202, 202, 202);
+        }
+
+        .default-bg {
+            position: relative;
+        }
+
+        .default-bg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #F1F3F4;
+            z-index: -1;
+            outline: 1px solid #DBDDE1;
+            border-radius:2px;
+        }
     </style>
 </head>
 
@@ -58,7 +79,9 @@
             for (let i = 0; i < Math.ceil(2016 / 9); i++) {
                 html += '<tr>';
                 for (let j = 0; j < 9 && counter <= 2015; j++) {
-                    html += `<td id="block_${counter}"><div class="content">${counter}</div></td>`;
+                    // Check if the current cell/block number has a tag
+                    const hasTag = tagsData.some(entry => entry.block == counter);
+                    html += `<td id="block_${counter}" class="${hasTag ? 'default-bg' : ''}"><div class="content">${counter}</div></td>`;
                     counter++;
                 }
                 html += '</tr>';
@@ -108,7 +131,7 @@
 
             if (item) {
                 const tagsEntry = tagsData.find(entry => entry.block == blockNumber);
-                const tagsString = tagsEntry ? `<p><strong>Tags:</strong> ${tagsEntry.tags.join(', ')}</p>` : '';
+                const tagsString = tagsEntry ? `<p>Tags: ${tagsEntry.tags.join(', ')}</p>` : '';
 
                 // Extract image URL from the tagsData entry
                 let imageUrl = '';
@@ -116,8 +139,8 @@
                     imageUrl = tagsEntry.imageUrl;
                 }
 
-                 // Extract YouTube from the tagsData entry
-                 let YTUrl = '';
+                // Extract YouTube from the tagsData entry
+                let YTUrl = '';
                 if (tagsEntry && tagsEntry.YTUrl) {
                     YTUrl = tagsEntry.YTUrl;
                 }
@@ -138,18 +161,32 @@
                     TwitterImage = tagsEntry.TwitterImage;
                 }
 
+                const hasSocialLinks = YTimage || TwitterImage;
+
                 blockDetailDiv.innerHTML = `
                 <div id="closeButton"><img src="images/down-icon.png"></div>
                 <div class="resultItem">
                     ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
                     <div class="itemTitle">${item.title}</div>
-                <p>${item.content}</p>
-                ${tagsString}
+
+                    <div class="itemAddressContainer">
+                        <img src="images/copy-icon.png" class="copy-icon" onclick="copyText()">
+                        <div id="text-to-copy" class="itemAddress">${item.content}</div>
+                    </div>
+                    <div class="itemTags">${tagsString}</div>
+
                 <div class="logo-list">
-                <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="logos/rcsv-logo.png" class="blockdetaillogoicon"></a>
-                <a href="https://mscribe.io/block/${blockNumber}" target="_blank"><img src="logos/mscribe-logo.png" class="blockdetaillogoicon"></a>
-                <a href="${YTUrl}" target="_blank">${YTimage ? `<img src="${YTimage}" alt="" class="blockdetaillogoicon">` : ''}</a>
-                <a href="${TwitterUrl}" target="_blank">${TwitterImage ? `<img src="${TwitterImage}" alt="" class="blockdetaillogoicon">` : ''}</a>
+                    ${hasSocialLinks ? '<div class="link-title">Socials</div>' : ''}
+                    <div class="social-links">
+                        <a href="${YTUrl}" target="_blank">${YTimage ? `<img src="${YTimage}" alt="" class="blockdetaillogoicon">` : ''}</a>
+                        <a href="${TwitterUrl}" target="_blank">${TwitterImage ? `<img src="${TwitterImage}" alt="" class="blockdetaillogoicon">` : ''}</a>
+                    </div>
+                    <div class="link-title">Bapp Integrations</div>
+                    <div class="bapp-links">
+                        <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="logos/rcsv-logo.png" class="blockdetaillogoicon"></a>
+                        <a href="https://mscribe.io/block/${blockNumber}" target="_blank"><img src="logos/mscribe-logo.png" class="blockdetaillogoicon"></a>
+                        <a href="https://bitmap.community/analyzer/${blockNumber}" target="_blank"><img src="logos/bitmapcommunity.png" class="blockdetaillogoicon"></a>
+                    </div>
                 </div>
             </div>
         `;
@@ -210,7 +247,7 @@
             } else if (msg.func === 'ownerOf' && msg.result && msg.result.address) { // Once ownerOf is obtained the title, content and link are added tot he array
                 data.push({
                     title: `${msg.call_id}.bitmap`,
-                    content: `Owner: ${msg.result.address}`,
+                    content: `${msg.result.address}`, // formerly `Owner: ${msg.result.address}`
                 });
             }
         });
@@ -282,7 +319,7 @@
 
                     const blockNumber = item.title.split(".")[0];
                     document.getElementById(`block_${blockNumber}`).classList.add('highlightSearchResult');
-                    const tagsString = tagEntry ? `<p><strong>Tags:</strong> ${tagEntry.tags.join(', ')}</p>` : '';
+                    const tagsString = tagEntry ? `<p>Tags: ${tagEntry.tags.join(', ')}</p>` : '';
 
                     // Extract the image URL from the tagsData entry
                     let imageUrl = '';
@@ -503,6 +540,30 @@
                 minimizeSearchResults();
             }
         }
+
+        // ============== Copy Address Icon ==============
+
+        function copyText() {
+            const textElement = document.getElementById('text-to-copy');
+            const selection = window.getSelection();
+            const range = document.createRange();
+
+            // Create a range (selection) for the text element
+            range.selectNodeContents(textElement);
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            // Try copying the selected text
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Failed to copy text', err);
+            }
+
+            // Remove the selection after copying
+            selection.removeAllRanges();
+        }
+
 
     </script>
 

@@ -53,7 +53,7 @@ h6 {
 body {
   color: black;
   font-family: Arial, sans-serif;
-  background-color: #F1F3F4;
+  background-color: #F8F9FA;
 }
 
 /* Content */
@@ -130,7 +130,7 @@ table {
 td {
   width: 11%;
   position: relative;
-  border-radius:2px;
+  border-radius: 2px;
 }
 
 td .content {
@@ -194,8 +194,26 @@ td .content {
   margin-top: 15px;
 }
 
+.itemAddressContainer {
+  display: flex;
+  margin-top: 5px;
+}
+
+.copy-icon {
+  margin-right: 5px;
+  margin-top: 2px;
+  margin-bottom: 3px;
+  align-items: flex-start;
+}
+
 .itemAddress {
-  color :#666;
+  color :#555;
+  font-size: 0.95em;
+}
+
+.itemTags {
+  color :#555;
+  font-size: 0.95em;
 }
 
 #searchResults.minimized {
@@ -248,9 +266,21 @@ td .content {
   transition: transform 0.3s ease; /* Smooth transition for moving content */
 }
 
-.logo-list {
+.link-title {
+  text-transform: uppercase;
+  font-size: 0.85em;
+  color: #999;
+  margin-top: 15px;
+}
+
+.social-links {
+  margin-top: 5px;
   display: flex;
-  margin-top: 20px;
+}
+
+.bapp-links {
+  margin-top: 5px;
+  display: flex;
 }
 
 .blockdetaillogoicon {
