@@ -12,7 +12,7 @@
 
     <style>
         #togglePadding {
-            height: 50vh;
+            height: 60vh;
             display: none;
         }
 
@@ -22,6 +22,7 @@
 
         .default-bg {
             position: relative;
+            color: #111;
         }
 
         .default-bg::before {
@@ -161,12 +162,24 @@
                     TwitterImage = tagsEntry.TwitterImage;
                 }
 
+                // Extract website from the tagsData entry
+                let websiteUrl = '';
+                if (tagsEntry && tagsEntry.websiteUrl) {
+                    websiteUrl = tagsEntry.websiteUrl;
+                }
+
+                let websiteImage = '';
+                if (tagsEntry && tagsEntry.websiteImage) {
+                    websiteImage = tagsEntry.websiteImage;
+                }
+
                 const hasSocialLinks = YTimage || TwitterImage;
 
                 blockDetailDiv.innerHTML = `
                 <div id="closeButton"><img src="images/down-icon.png"></div>
                 <div class="resultItem">
                     ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
+
                     <div class="itemTitle">${item.title}</div>
 
                     <div class="itemAddressContainer">
@@ -178,14 +191,15 @@
                 <div class="logo-list">
                     ${hasSocialLinks ? '<div class="link-title">Socials</div>' : ''}
                     <div class="social-links">
+                        <a href="${websiteUrl}" target="_blank">${websiteImage ? `<img src="${websiteImage}" alt="" class="blockdetaillogoicon">` : ''}</a>
                         <a href="${YTUrl}" target="_blank">${YTimage ? `<img src="${YTimage}" alt="" class="blockdetaillogoicon">` : ''}</a>
                         <a href="${TwitterUrl}" target="_blank">${TwitterImage ? `<img src="${TwitterImage}" alt="" class="blockdetaillogoicon">` : ''}</a>
                     </div>
                     <div class="link-title">Bapp Integrations</div>
                     <div class="bapp-links">
-                        <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="logos/rcsv-logo.png" class="blockdetaillogoicon"></a>
-                        <a href="https://mscribe.io/block/${blockNumber}" target="_blank"><img src="logos/mscribe-logo.png" class="blockdetaillogoicon"></a>
-                        <a href="https://bitmap.community/analyzer/${blockNumber}" target="_blank"><img src="logos/bitmapcommunity.png" class="blockdetaillogoicon"></a>
+                        <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="logos/bapps/rcsv-logo.png" class="blockdetaillogoicon"></a>
+                        <a href="https://mscribe.io/block/${blockNumber}" target="_blank"><img src="logos/bapps/mscribe-logo.png" class="blockdetaillogoicon"></a>
+                        <a href="https://bitmap.community/analyzer/${blockNumber}" target="_blank"><img src="logos/bapps/bitmapcommunity.png" class="blockdetaillogoicon"></a>
                     </div>
                 </div>
             </div>
@@ -414,7 +428,7 @@
             cell.scrollIntoView(true); // Scroll the cell into view
 
             const cellPosition = cell.getBoundingClientRect();
-            const desiredOffset = window.innerHeight * 0.25;
+            const desiredOffset = window.innerHeight * 0.2;
 
             const currentScrollPosition = window.scrollY || window.pageYOffset; // Calculate the current scroll position
 

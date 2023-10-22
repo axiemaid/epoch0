@@ -1,23 +1,68 @@
 const tagsData = [
     {
         block: 0,
-        tags: ["bitoshi", "blockamoto", "genesis", "founder", "OG"],
+        tags: ["bitoshi", "blockamoto", "genesis", "zero", "bitmap.land"],
+        imageUrl: "images/bitoshi.jpg",
+        TwitterUrl: "https://twitter.com/blockamotoo",
+        TwitterImage: "logos/x-logo.png",
+    },
+    {
+        block: 3,
+        tags: ["Metavoxelz", "voxel", "art"],
+        imageUrl: "images/metavoxelz.jpg",
+        websiteUrl: "https://linktr.ee/metavoxelz", 
+        websiteImage: "logos/metavoxelz-logo.png",
+        TwitterUrl: "https://twitter.com/Metavoxelz",
+        TwitterImage: "logos/x-logo.png",
+
     },
     {
         block: 8,
-        tags: ["8bit", "8", "bit", "versions", "recursion", "art", "OG"],
+        tags: ["8bit", "8", "bit", "versions", "recursion", "art", "therecursed", "Ordlibrary", "library"],
+        imageUrl: "images/8bit.png",
+        websiteUrl: "https://ordlibrary.com/", 
+        websiteImage: "logos/ordlibrary-logo.jpg",
+        TwitterUrl: "https://twitter.com/therecursed",
+        TwitterImage: "logos/x-logo.png",
     },
     {
         block: 9,
-        tags: ["9", "block9ine", "Blix", "music", "art", "nine", "block"],
+        tags: ["9", "block9ine", "Blix", "music", "art", "nine"],
         imageUrl: "images/9bitmap.jpg",
         TwitterUrl: "https://twitter.com/block9ine",
         TwitterImage: "logos/x-logo.png"
     },
     {
+        block: 33,
+        tags: ["H.bitmap", "limanbit"],
+        TwitterUrl: "https://twitter.com/limanbit",
+        TwitterImage: "logos/x-logo.png"
+    },
+    {
+        block: 65,
+        tags: ["ghb.eth", "ghb", "benbuiz"],
+        imageUrl: "images/benbuiz.jpg",
+        TwitterUrl: "https://twitter.com/benbuiz",
+        TwitterImage: "logos/x-logo.png"
+    },
+    {
+        block: 67,
+        tags: ["CRFTD", "art", "bLOCKHeadz", "City", "Pristine", "Punk" ],
+        imageUrl: "images/crftd.png",
+        websiteUrl: "https://www.crftdla.com/", 
+        websiteImage: "logos/crftd-logo.jpg",
+        TwitterUrl: "https://twitter.com/_CRFTD_",
+        TwitterImage: "logos/x-logo.png"
+    },
+    {
+        block: 87,
+        tags: ["0xValue", "Value0x"],
+        TwitterUrl: "https://twitter.com/Value0x",
+        TwitterImage: "logos/x-logo.png"
+    },
+    {
         block: 91,
-        tags: ["Block", "Runner", "Iman", "Podcast", "YouTube"],
-        detail: ["Bitmap Valley"],
+        tags: ["Block", "Runner", "Iman", "Will", "Podcast", "YouTube"],
         imageUrl: "images/blockrunner.png", 
         YTUrl: "https://www.youtube.com/@TheBlockRunner",
         YTimage: "logos/youtube-logo.png",
@@ -25,25 +70,134 @@ const tagsData = [
         TwitterImage: "logos/x-logo.png"
     },
     {
-        block: 92,
-        tags: ["Block", "Runner", "Iman", "Podcast", "YouTube"],
-        detail: ["Bitmap Valley"]
-    },
-    {
-        block: 96,
-        tags: ["Block", "Runner", "Iman", "Podcast", "YouTube"],
-        detail: ["Bitmap Valley"]
-    },
-    {
         block: 100,
-        tags: ["Block", "Runner", "Iman", "Podcast", "YouTube"],
-        detail: ["Bitmap Valley"],
+        tags: ["Block", "Runner", "Iman", "Will", "Podcast", "YouTube"],
         imageUrl: "images/iman.jpg" 
+    },
+    {
+        block: 108,
+        tags: ["Squid Game Club", "Squid", "Game", "DynamikeGuo"],
+        TwitterUrl: "https://twitter.com/DynamikeGuo",
+        TwitterImage: "logos/x-logo.png"
+    },
+    {
+        block: 154,
+        tags: ["Apollo11.btc", "Apollo11"],
+        TwitterUrl: "https://twitter.com/dcfwd",
+        TwitterImage: "logos/x-logo.png"
+    },
+    {
+        block: 171,
+        tags: ["A2E"],
+        TwitterUrl: "https://twitter.com/A2E_A2E",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 353,
+        tags: ["NRCHST", "NRCHST.sats", "NRCHSTx"],
+        TwitterUrl: "https://twitter.com/NRCHSTx",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 382,
+        tags: ["madi.x", "madix", "og.bitmap"],
+        imageUrl: "images/madix.jpg",
+        TwitterUrl: "https://twitter.com/forsure_madix",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 444,
+        tags: ["ET"],
+        imageUrl: "images/ET.png",
+        TwitterUrl: "https://twitter.com/444bitmap",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 502,
+        tags: ["999 Club", "999", "sub", "1K"],
+        imageUrl: "images/999club.jpg",
+        TwitterUrl: "https://twitter.com/The999Club_",
+        TwitterImage: "logos/x-logo.png" 
     },
     {
         block: 505,
         tags: ["axiemaid"],
-        detail: ["Bitmap Valley"]
+        imageUrl: "images/axiemaid.jpg",
+        TwitterUrl: "https://twitter.com/axiemaid",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 609,
+        tags: ["bop.xbt", "bop", "boppleton", "borosilicate", "punk", "Three.js"],
+        TwitterUrl: "https://twitter.com/boppleton",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 710,
+        tags: ["boyster", "oil"],
+        TwitterUrl: "https://twitter.com/Boysterbro",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 714,
+        tags: ["LostPoet.sats", "lost", "poet", "music", "musician", "writer"],
+        imageUrl: "images/lostpoet.jpg",
+        TwitterUrl: "https://twitter.com/LostPoet",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 722,
+        tags: ["林冲", "jackle_eth", "jackle"],
+        TwitterUrl: "https://twitter.com/jackle_eth",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 733,
+        tags: ["Non Fungible Gentleman", "NftDiscoMan"],
+        TwitterUrl: "https://twitter.com/NftDiscoMan",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 786,
+        tags: ["Crypto Fox", "fox", "hotmonkeydeals", "RecursiveX"],
+        imageUrl: "images/cryptofox.jpg",
+        TwitterUrl: "https://twitter.com/hotmonkeydeals",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 792,
+        tags: ["athos", "espionagesats"],
+        imageUrl: "images/athos.jpg",
+        TwitterUrl: "https://twitter.com/espionagesats",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 980,
+        tags: ["wealth.bitmap", "wealth", "ordinal.club", "ammdex"],
+        imageUrl: "images/axiemaid.jpg",
+        TwitterUrl: "https://twitter.com/ammdex",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 1051,
+        tags: ["BenjaminsCartel.btc", "Benjamins", "Cartel", "art", "Ben"],
+        imageUrl: "images/bencartel.jpg",
+        websiteUrl: "https://ordinalswallet.com/collection/benjamins-cartel-btc", 
+        websiteImage: "logos/bencartel-logo.jpg",
+        TwitterUrl: "https://twitter.com/3eyondLabs",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 1470,
+        tags: ["Nefu.sats", "Nefu,"],
+        TwitterUrl: "https://twitter.com/0xNefu",
+        TwitterImage: "logos/x-logo.png" 
+    },
+    {
+        block: 1970,
+        tags: ["boyster"],
+        TwitterUrl: "https://twitter.com/Boysterbro",
+        TwitterImage: "logos/x-logo.png" 
     },
 
     // ... more entries ...
