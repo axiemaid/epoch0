@@ -1,6 +1,7 @@
 const tagsData = [
     {
         block: 0,
+        ownerUsername: "Bitoshi Blockamoto",
         tags: ["bitoshi", "blockamoto", "genesis", "zero", "bitmap.land"],
         imageUrl: "images/bitoshi.jpg",
         TwitterUrl: "https://twitter.com/blockamotoo",
@@ -8,6 +9,7 @@ const tagsData = [
     },
     {
         block: 3,
+        ownerUsername: "Metavoxelz",
         tags: ["Metavoxelz", "voxel", "art"],
         imageUrl: "images/metavoxelz.jpg",
         websiteUrl: "https://linktr.ee/metavoxelz", 
@@ -18,7 +20,8 @@ const tagsData = [
     },
     {
         block: 8,
-        tags: ["8bit", "8", "bit", "versions", "recursion", "art", "therecursed", "Ordlibrary", "library"],
+        ownerUsername: "8Bit",
+        tags: ["8Bit", "8", "bit", "versions", "recursion", "art", "therecursed", "Ordlibrary", "library"],
         imageUrl: "images/8bit.png",
         websiteUrl: "https://ordlibrary.com/", 
         websiteImage: "logos/ordlibrary-logo.jpg",
@@ -27,8 +30,11 @@ const tagsData = [
     },
     {
         block: 9,
+        ownerUsername: "9.bitmap",
         tags: ["9", "block9ine", "Blix", "music", "art", "nine"],
         imageUrl: "images/9bitmap.jpg",
+        websiteUrl: "https://blix.wtf//", 
+        websiteImage: "logos/blix-logo.png",
         TwitterUrl: "https://twitter.com/block9ine",
         TwitterImage: "logos/x-logo.png"
     },
@@ -47,6 +53,7 @@ const tagsData = [
     },
     {
         block: 67,
+        ownerUsername: "CRFTD",
         tags: ["CRFTD", "art", "bLOCKHeadz", "City", "Pristine", "Punk" ],
         imageUrl: "images/crftd.png",
         websiteUrl: "https://www.crftdla.com/", 
@@ -62,8 +69,11 @@ const tagsData = [
     },
     {
         block: 91,
+        ownerUsername: "The Block Runner",
         tags: ["Block", "Runner", "Iman", "Will", "Podcast", "YouTube"],
-        imageUrl: "images/blockrunner.png", 
+        imageUrl: "images/blockrunner.png",
+        websiteUrl: "https://smartlink.metricool.com/public/smartlink/the-block-runner/", 
+        websiteImage: "logos/blockrunner-logo.png", 
         YTUrl: "https://www.youtube.com/@TheBlockRunner",
         YTimage: "logos/youtube-logo.png",
         TwitterUrl: "https://twitter.com/TheBlockRunner",
@@ -71,8 +81,11 @@ const tagsData = [
     },
     {
         block: 100,
-        tags: ["Block", "Runner", "Iman", "Will", "Podcast", "YouTube"],
-        imageUrl: "images/iman.jpg" 
+        ownerUsername: "iman.sats",
+        tags: ["iman.sats", "Iman", "Block", "Runner", "Podcast", "YouTube"],
+        imageUrl: "images/iman.jpg",
+        TwitterUrl: "https://twitter.com/iman_blockrun",
+        TwitterImage: "logos/x-logo.png"
     },
     {
         block: 108,
@@ -82,7 +95,8 @@ const tagsData = [
     },
     {
         block: 154,
-        tags: ["Apollo11.btc", "Apollo11"],
+        ownerUsername: "Apollo11.btc",
+        tags: ["Apollo11.btc", "Apollo11", "apollo"],
         TwitterUrl: "https://twitter.com/dcfwd",
         TwitterImage: "logos/x-logo.png"
     },
@@ -180,6 +194,7 @@ const tagsData = [
     },
     {
         block: 1051,
+        ownerUsername: "BenjaminsCartel.btc",
         tags: ["BenjaminsCartel.btc", "Benjamins", "Cartel", "art", "Ben"],
         imageUrl: "images/bencartel.jpg",
         websiteUrl: "https://ordinalswallet.com/collection/benjamins-cartel-btc", 

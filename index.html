@@ -35,7 +35,7 @@
             background-color: #F1F3F4;
             z-index: -1;
             outline: 1px solid #DBDDE1;
-            border-radius:2px;
+            border-radius: 2px;
         }
     </style>
 </head>
@@ -63,6 +63,9 @@
         <div id="blockDetails"></div>
     </div>
 
+    <div id="loadingIcon" class="loading-icon-container">
+        <div class="loading-circle"></div>
+    </div>
 
     <!-- ===================== JavaScript ===================== -->
 
@@ -140,6 +143,12 @@
                     imageUrl = tagsEntry.imageUrl;
                 }
 
+                // Extract image URL from the tagsData entry
+                let ownerUsername = '';
+                if (tagsEntry && tagsEntry.ownerUsername) {
+                    ownerUsername = tagsEntry.ownerUsername;
+                }
+
                 // Extract YouTube from the tagsData entry
                 let YTUrl = '';
                 if (tagsEntry && tagsEntry.YTUrl) {
@@ -180,8 +189,8 @@
                 <div class="resultItem">
                     ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
 
+                    <div class="owner-username">${ownerUsername}</div>
                     <div class="itemTitle">${item.title}</div>
-
                     <div class="itemAddressContainer">
                         <img src="images/copy-icon.png" class="copy-icon" onclick="copyText()">
                         <div id="text-to-copy" class="itemAddress">${item.content}</div>
@@ -200,6 +209,9 @@
                         <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="logos/bapps/rcsv-logo.png" class="blockdetaillogoicon"></a>
                         <a href="https://mscribe.io/block/${blockNumber}" target="_blank"><img src="logos/bapps/mscribe-logo.png" class="blockdetaillogoicon"></a>
                         <a href="https://bitmap.community/analyzer/${blockNumber}" target="_blank"><img src="logos/bapps/bitmapcommunity.png" class="blockdetaillogoicon"></a>
+                        <a href="https://bitlords.land/block/${blockNumber}" target="_blank"><img src="logos/bapps/bitlords-logo.png" class="blockdetaillogoicon"></a>
+                        <a href="https://magiceden.io/ordinals/item-details/${item.id}" target="_blank"><img src="logos/bapps/ME-logo.png" class="blockdetaillogoicon"></a>
+                        <a href="https://ordinalswallet.com/inscription/${item.id}" target="_blank"><img src="logos/bapps/OW-logo.png" class="blockdetaillogoicon"></a>
                     </div>
                 </div>
             </div>
@@ -237,34 +249,51 @@
 
         ////========================================
 
-        const data = []; // Empty at the start
+       
+        const data = [];
+const trac = io("https://bitmap.trac.network", {
+    // ... your existing config
+});
 
-        const trac = io("https://bitmap.trac.network", {
-            autoConnect: true,
-            reconnection: true,
-            reconnectionDelay: 500,
-            reconnectionDelayMax: 500,
-            randomizationFactor: 0
-        });
+let tempIds = {};  
+let totalQueries = 0;
+let receivedResponses = 0;
 
-        trac.on('response', function (msg) { // Obtain ownerOf from the id of a block number
-            if (msg.func === 'inscribedBitmaps') {
-                for (let block in msg.result) {
-                    if (msg.result[block] && msg.result[block].id) {
-                        trac.emit('get', {
-                            func: 'ownerOf',
-                            args: [msg.result[block].id],
-                            call_id: block
-                        });
-                    }
-                }
-            } else if (msg.func === 'ownerOf' && msg.result && msg.result.address) { // Once ownerOf is obtained the title, content and link are added tot he array
-                data.push({
-                    title: `${msg.call_id}.bitmap`,
-                    content: `${msg.result.address}`, // formerly `Owner: ${msg.result.address}`
+// Show the loading icon initially
+document.getElementById('loadingIcon').style.display = 'flex'; 
+
+trac.on('response', function (msg) { 
+    if (msg.func === 'inscribedBitmaps') {
+        for (let block in msg.result) {
+            if (msg.result[block] && msg.result[block].id) {
+                tempIds[block] = msg.result[block].id;
+                trac.emit('get', {
+                    func: 'ownerOf',
+                    args: [msg.result[block].id],
+                    call_id: block
                 });
+                totalQueries++; // Increment the count of total queries sent
             }
-        });
+        }
+    } else if (msg.func === 'ownerOf' && msg.result && msg.result.address) {
+        const id = tempIds[msg.call_id];
+        if (id) {
+            data.push({
+                id: id,
+                title: `${msg.call_id}.bitmap`,
+                content: `${msg.result.address}`,
+            });
+            delete tempIds[msg.call_id];
+        }
+        receivedResponses++; // Increment the count of received responses
+
+        // Check if all responses have been received
+        if (receivedResponses === totalQueries) {
+            document.getElementById('loadingIcon').style.display = 'none';
+        }
+    }
+});
+
 
         const CHUNK_SIZE = 200;
         for (let i = 0; i <= 2015; i += CHUNK_SIZE) {
@@ -279,6 +308,8 @@
                 call_id: ''
             });
         }
+
+        
 
         //-----------------
 
@@ -341,11 +372,18 @@
                         imageUrl = tagEntry.imageUrl;
                     }
 
+                    // Extract the owner username from the tagsData entry
+                    let ownerUsername = '';
+                    if (tagEntry && tagEntry.ownerUsername) {
+                        ownerUsername = tagEntry.ownerUsername;
+                    }
+
                     resultsHtml += `
     <div class="resultItem">
         ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
+        <div class="owner-username">${ownerUsername}</div>
         <div class="itemTitle">${item.title}</div>
-        <div class="itemAddress">${item.content}</div>
+        <!-- <div class="itemAddress">${item.content}</div> -->
         <div class=itemTags>${tagsString}</div>
     </div>
 `;
