@@ -102,7 +102,7 @@ body {
   border: 1px solid #fff;
   border-radius: 23px;
   flex-grow: 1;
-  padding: 11px 20px 10px 20px; /* top padding a 1px higher to center placeholder text */
+  padding: 9px 0 8px 20px; /* top padding a 1px higher to center placeholder text */
 }
 
 #clearInputButton {
@@ -349,25 +349,35 @@ td .content {
 
 /* ========================= Trending toggle ============================ */
 
+#contentDiv {
+  position: fixed;
+  background-color: #fff;
+  width: 100%;
+  max-width: 550px;
+  height: 420px; /* 50% of the viewport height */
+  bottom: 0; /* Start at the bottom of the screen */
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  transition: 0.4s; /* Smooth transition effect */
+  z-index: 1001;
+}
+
 .trending-container {
- display: flex;
- overflow-x: auto;
- padding: 0 20px;
+  display: flex;
+  overflow-x: auto;
+  padding-left: 20px;
 }
 
 .epoch-title {
-  margin: 20px;
   font-size: 1.25em;
   font-weight: 500;
-}
-
-.status-bar {
-  flex: 0 0 25%;
+  margin: 20px;
 }
 
 .trending-content {
-  margin-right: 20px;
   flex: 0 0 55%;
+  margin-right: 20px;
 }
 
 .trending-content-title {
@@ -377,33 +387,16 @@ td .content {
 }
 
 .trending-content-owner {
-  font-size: 0.95em;
+  font-size: 1em;
 }
 
 .trending-content-bitmap {
   color: #666;
-  font-size: 0.95em;
+  font-size: 1em;
 }
 
 /* ========================= Trending Content Toggle ============================ */
 
- /* Style for the content div */
- #contentDiv {
-  width: 100%;
-  height: 48vh; /* 50% of the viewport height */
-  background-color: #fff;
-  position: fixed;
-  bottom: 0; /* Start at the bottom of the screen */
-  transition: 0.4s; /* Smooth transition effect */
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  max-width: 550px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  z-index: 1001;
-  
-}
-
-/* Style for the toggle button */
 #toggleButton {
   width: 50px;
   height: 50px;
@@ -415,19 +408,21 @@ td .content {
   cursor: pointer;
   position: fixed;
   right: 20px; /* 20px from the right side of the screen */
-  bottom: 50vh; /* Just above the content div */
+  bottom: 445px; /* Just above the content div */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  transition: 0.4s; /* Smooth transition effect */
+  transition: 0.4s;
   z-index: 1; /* Make sure the button is on top of the content div */
-  
 }
 
-/* When content div is hidden */
-.hidden {
+#toggleButton img {
+  width: 30px;
+}
+
+.hidden { /* When content div is hidden */
   transform: translateY(100%); /* Slide it down out of view */
 }
 
-/* Adjust the button position when content div is hidden */
-#toggleButton.move {
-  bottom: 65px; /* Adjust as per your design needs */
+
+#toggleButton.move { /* Adjust the button position when content div is hidden */
+  bottom: 65px;
 }
