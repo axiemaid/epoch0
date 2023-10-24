@@ -60,8 +60,8 @@
         <div id="pageContent">
 
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="What are you looking for?">
-                <div id="clearInputButton">×</div>
+                <input type="text" id="searchInput" placeholder="Explore here">
+                <div id="clearInputButton"><img src="images/icons/close.png"></div>
             </div>
 
             <div id="searchResults"></div>
@@ -223,18 +223,12 @@
                 const hasSocialLinks = YTimage || TwitterImage;
 
                 blockDetailDiv.innerHTML = `
-                <div id="closeButton"><img src="images/down-icon.png"></div>
+                <div id="closeButton"><img src="images/icons/down.png"></div>
                 <div class="resultItem">
-                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
 
                     <div class="owner-username">${ownerUsername}</div>
                     <div class="itemTitle">${item.title}</div>
-                    <div class="itemAddressContainer">
-                        <img src="images/copy-icon.png" class="copy-icon" onclick="copyText()">
-                        <div id="text-to-copy" class="itemAddress">${item.content}</div>
-                    </div>
-                    <div class="itemTags">${tagsString}</div>
-
+                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
                 <div class="logo-list">
                     ${hasSocialLinks ? '<div class="link-title">Socials</div>' : ''}
                     <div class="social-links">
@@ -252,6 +246,12 @@
                         <a href="https://ordinalswallet.com/inscription/${item.id}" target="_blank"><img src="logos/bapps/OW-logo.png" class="blockdetaillogoicon"></a>
                     </div>
                 </div>
+
+                    <div class="itemAddressContainer">
+                        <img src="images/copy-icon.png" class="copy-icon" onclick="copyText()">
+                        <div id="text-to-copy" class="itemAddress">${item.content}</div>
+                    </div>
+                    <div class="itemTags">${tagsString}</div>
             </div>
         `;
 
@@ -680,11 +680,11 @@
 
 
         function calculateGap() {
-            const maxChildWidth = 550;
+            const maxChildWidth = 501; // added 1px to account for desktop window test size, return to 500 after testing
             const windowWidth = window.innerWidth;
 
             if (windowWidth >= maxChildWidth) {
-                return (windowWidth - maxChildWidth) / 2;
+                return (windowWidth - maxChildWidth) / 2 + 20;
             } else {
                 return 20;
             }

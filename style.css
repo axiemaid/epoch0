@@ -72,7 +72,7 @@ body {
 
 .content-container {
   position: relative;
-  max-width: 550px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
@@ -92,7 +92,7 @@ body {
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   transition: all 0.3s;
-  max-width: 550px;
+  max-width: 500px;
   margin: 20px auto 0 auto;
 }
 
@@ -115,13 +115,18 @@ body {
   display: none;
 }
 
+#clearInputButton img {
+  width: 30px;
+  padding: 4px;
+}
+
 #searchInput:focus {
   outline: none;
 }
 
 .search-container:focus-within {
+  border: 1px solid #DBDDE1;
   box-shadow: none;
-  outline: 1px solid #DBDDE1;
 }
 
 ::placeholder {
@@ -187,7 +192,7 @@ td .content {
   z-index: 1000; /* To ensure it's always on top. */
   height: 60vh;
   overflow-y: auto;
-  max-width: 550px;
+  max-width: 500px;
   margin: 0 auto;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -205,9 +210,8 @@ td .content {
 }
 
 .owner-username {
-  font-weight: 600;
-  font-size: 1.05em;
-  color: #333;
+  font-weight: 500;
+  font-size: 1.25em;
   margin-top: 15px;
 }
 
@@ -247,8 +251,8 @@ td .content {
 
 #swipeBar img{
   cursor: pointer;
-  margin-top: 9px;
-  margin-bottom: 9px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   width: 30px;
 }
 
@@ -265,23 +269,23 @@ td .content {
   left: 0;
   right: 0; /* This will stretch the div across the full width of the page. */
   background-color: #fff;
-  border-top: 1px solid #e5e5e5; /* Optional: Adds a little border on top for distinction. */
-  padding: 20px; /* Optional: Adds a little space around the content. */
+  /* border-top: 1px solid #e5e5e5; */
+  padding: 0 20px; 
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; 
   display: none; /* By default, it should be hidden. */
-  z-index: 1000; /* To ensure it's always on top. */
+  z-index: 1000;
   height: 60vh;
   overflow-y: auto;
-  max-width: 550px;
+  max-width: 500px;
   margin: 0 auto;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
 
 #closeButton img{
-  height: 10px;
+  width: 30px;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin: 10px 0;
   transform: rotate(90deg);
 }
 
@@ -353,8 +357,8 @@ td .content {
   position: fixed;
   background-color: #fff;
   width: 100%;
-  max-width: 550px;
-  height: 420px; /* 50% of the viewport height */
+  max-width: 500px;
+  height: 400px; /* 50% of the viewport height */
   bottom: 0; /* Start at the bottom of the screen */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border-top-left-radius: 10px;
@@ -376,8 +380,9 @@ td .content {
 }
 
 .trending-content {
-  flex: 0 0 55%;
+  flex: 0 0 260px;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .trending-content-title {
@@ -408,7 +413,7 @@ td .content {
   cursor: pointer;
   position: fixed;
   right: 20px; /* 20px from the right side of the screen */
-  bottom: 445px; /* Just above the content div */
+  bottom: 420px; /* Just above the content div */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   transition: 0.4s;
   z-index: 1; /* Make sure the button is on top of the content div */
