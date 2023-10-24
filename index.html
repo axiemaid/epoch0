@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Search with JavaScript</title>
     <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
         integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -18,11 +24,14 @@
 
         .has-tag {
             outline: 1px solid rgb(202, 202, 202);
+
         }
 
         .default-bg {
             position: relative;
             color: #111;
+            font-weight: 500;
+
         }
 
         .default-bg::before {
@@ -41,6 +50,11 @@
 </head>
 
 <body>
+
+    <div id="loadingIcon" class="loading-icon-container">
+        <div class="loading-circle"></div>
+    </div>
+
 
     <div class="content-container">
         <div id="pageContent">
@@ -61,10 +75,34 @@
         </div>
 
         <div id="blockDetails"></div>
-    </div>
 
-    <div id="loadingIcon" class="loading-icon-container">
-        <div class="loading-circle"></div>
+        <!-- Toggle Button -->
+        <div id="toggleButton" onclick="toggleContent()"><img src="images/icons/down.png"></div>
+
+        <!-- Content Div -->
+        <div id="contentDiv">
+            <div class="epoch-title">Latest in Epoch 0</div>
+            <div class="trending-container">
+                <div class="trending-content" data-block-number="722">
+                    <img src="images/thumbnail/rcsv-goose.jpg" class="trending-content-img">
+                    <div class="trending-content-title">Goose party on 722.bitmap</div>
+                    <div class="trending-content-owner">林冲.btc</div>
+                    <div class="trending-content-bitmap">722.bitmap</div>
+                </div>
+                <div class="trending-content">
+                    <img src="images/thumbnail/bitmap-chron.jpg" class="trending-content-img">
+                    <div class="trending-content-title">Bitmap Chronicles by 8bit</div>
+                    <div class="trending-content-owner">8Bit</div>
+                    <div class="trending-content-bitmap">8.bitmap</div>
+                </div>
+                <div class="trending-content">
+                    <img src="images/thumbnail/tbr-atomicals.jpg" class="trending-content-img">
+                    <div class="trending-content-title">The Block Runner discusses Atomicals</div>
+                    <div class="trending-content-owner">The Block Runner</div>
+                    <div class="trending-content-bitmap">91.bitmap</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ===================== JavaScript ===================== -->
@@ -128,7 +166,7 @@
 
             // Ensure the div is visible before displaying details
             blockDetailDiv.style.display = 'block';
-
+            closeContentDiv();
             ShiftUpTable(); // add margin to page bottom when blockDisplay div is open
 
             const item = data.find(entry => entry.title === `${blockNumber}.bitmap`);
@@ -249,50 +287,52 @@
 
         ////========================================
 
-       
-        const data = [];
-const trac = io("https://bitmap.trac.network", {
-    // ... your existing config
-});
+        const data = []; // Empty at the start
 
-let tempIds = {};  
-let totalQueries = 0;
-let receivedResponses = 0;
+        const trac = io("https://bitmap.trac.network", {
+            autoConnect: true,
+            reconnection: true,
+            reconnectionDelay: 500,
+            reconnectionDelayMax: 500,
+            randomizationFactor: 0
+        });
 
-// Show the loading icon initially
-document.getElementById('loadingIcon').style.display = 'flex'; 
+        let tempIds = {};  // Temporary storage for ids
 
-trac.on('response', function (msg) { 
-    if (msg.func === 'inscribedBitmaps') {
-        for (let block in msg.result) {
-            if (msg.result[block] && msg.result[block].id) {
-                tempIds[block] = msg.result[block].id;
-                trac.emit('get', {
-                    func: 'ownerOf',
-                    args: [msg.result[block].id],
-                    call_id: block
-                });
-                totalQueries++; // Increment the count of total queries sent
+        document.getElementById('loadingIcon').style.display = 'flex';  // start loading icon
+
+        trac.on('response', function (msg) {
+            if (msg.func === 'inscribedBitmaps') {
+                for (let block in msg.result) {
+                    if (msg.result[block] && msg.result[block].id) {
+                        tempIds[block] = msg.result[block].id;  // Store the id temporarily
+
+                        trac.emit('get', {
+                            func: 'ownerOf',
+                            args: [msg.result[block].id],
+                            call_id: block
+                        });
+                    }
+                }
+            } else if (msg.func === 'ownerOf' && msg.result && msg.result.address) {
+                const id = tempIds[msg.call_id];
+
+                if (id) {
+                    data.push({
+                        id: id,
+                        title: `${msg.call_id}.bitmap`,
+                        content: `${msg.result.address}`,
+                    });
+
+                    // Once used, delete the id from tempIds
+                    delete tempIds[msg.call_id];
+                }
+
+                document.getElementById('loadingIcon').style.display = 'none';
             }
-        }
-    } else if (msg.func === 'ownerOf' && msg.result && msg.result.address) {
-        const id = tempIds[msg.call_id];
-        if (id) {
-            data.push({
-                id: id,
-                title: `${msg.call_id}.bitmap`,
-                content: `${msg.result.address}`,
-            });
-            delete tempIds[msg.call_id];
-        }
-        receivedResponses++; // Increment the count of received responses
+        });
 
-        // Check if all responses have been received
-        if (receivedResponses === totalQueries) {
-            document.getElementById('loadingIcon').style.display = 'none';
-        }
-    }
-});
+
 
 
         const CHUNK_SIZE = 200;
@@ -308,8 +348,6 @@ trac.on('response', function (msg) {
                 call_id: ''
             });
         }
-
-        
 
         //-----------------
 
@@ -335,6 +373,7 @@ trac.on('response', function (msg) {
         //--------------------
 
         function performSearch() {
+            closeContentDiv(); // closes trending div if open
             removeHighlightFromAllCells(); // Reset highlights
             restoreSearchResults(); // restore searchResults div if minimized on new search
 
@@ -391,7 +430,7 @@ trac.on('response', function (msg) {
             }
 
             if (resultsHtml) { // After the loop, check if any results were added.
-                resultsHtml = '<div id="swipeBar"><img src="images/down-icon.png"></div>' + resultsHtml;  // If there were results, prepend the title.
+                resultsHtml = '<div id="swipeBar"><img src="images/icons/down.png"></div>' + resultsHtml;  // If there were results, prepend the title.
             } else {
                 resultsHtml = '<p>Sorry, no results found.</p>'; // If no results, display the error message.
             }
@@ -615,6 +654,85 @@ trac.on('response', function (msg) {
             // Remove the selection after copying
             selection.removeAllRanges();
         }
+
+        // ============== Toggle LatestIn div ==============
+
+
+
+
+        function toggleContent() {
+            const contentDiv = document.getElementById('contentDiv');
+            const toggleButton = document.getElementById('toggleButton');
+
+            // If the contentDiv has the class "hidden", remove it, otherwise add it
+            if (contentDiv.classList.contains('hidden')) {
+                contentDiv.classList.remove('hidden');
+                toggleButton.classList.remove('move');
+                toggleButton.innerHTML = '<img src="images/icons/down.png">';
+            } else {
+                contentDiv.classList.add('hidden');
+                toggleButton.classList.add('move');
+                toggleButton.innerHTML = '<img src="images/icons/trend.png">';
+            }
+        }
+
+        // ============== calculate gap for toggle circle button ==============
+
+
+        function calculateGap() {
+            const maxChildWidth = 550;
+            const windowWidth = window.innerWidth;
+
+            if (windowWidth >= maxChildWidth) {
+                return (windowWidth - maxChildWidth) / 2;
+            } else {
+                return 20;
+            }
+        }
+
+        function setButtonPosition() {
+            let gap = calculateGap();
+
+            // Set the button's right position
+            document.getElementById('toggleButton').style.right = `${gap}px`;
+        }
+
+        // Set initial position
+        setButtonPosition();
+
+        // Update position on window resize
+        window.addEventListener('resize', setButtonPosition);
+
+        // ================== close toggle function =================
+
+        function closeContentDiv() {
+            const contentDiv = document.getElementById('contentDiv');
+            const toggleButton = document.getElementById('toggleButton');
+
+            if (!contentDiv.classList.contains('hidden')) {
+                contentDiv.classList.add('hidden');
+                toggleButton.classList.add('move');
+                toggleButton.innerHTML = '<img src="images/icons/trend.png">';
+            }
+        }
+
+
+
+        // event listener for treding items block details
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const trendingContents = document.querySelectorAll('.trending-content');
+
+            trendingContents.forEach(content => {
+                content.addEventListener('click', function () {
+                    const blockNumber = content.getAttribute('data-block-number');
+
+                    if (blockNumber) {
+                        displayBlockDetails(parseInt(blockNumber, 10));
+                    }
+                });
+            });
+        });
 
 
     </script>
