@@ -229,9 +229,8 @@
                 const hasSocialLinks = YTimage || TwitterImage;
 
                 blockDetailDiv.innerHTML = `
-                <div class="bug-wrapper">
                 <div id="closeButton"><img src="images/icons/down.png"></div>
-                <div class="bug-wrapper">
+            
                 <div class="resultItem">
                     <div class="owner-username">${ownerUsername}</div>
                     <div class="itemTitle">${item.title}</div>
@@ -272,8 +271,8 @@
                         <div class="itemsTags-title">Tags</div>
                         <div class="itemTags">${tagsString}</div>
                     </div>
-                    </div>
-            </div>
+                    
+            
             </div>
         `;
 
@@ -414,6 +413,8 @@
             // Initialize results Html with an empty string for now
             let resultsHtml = '';
 
+            let matchingBlockNumbers = [];  // This list will keep track of matched block numbers
+
             for (let item of data) {
                 const titleMatches = tokens.every(token => item.title.toLowerCase().includes(token));
                 const contentMatches = query.length > 7 && tokens.every(token => item.content.toLowerCase().includes(token));
@@ -428,10 +429,11 @@
                     const tagsString = tagEntry ? `<p>Tags: ${tagEntry.tags.join(', ')}</p>` : '';
 
                     // Extract the image URL from the tagsData entry
-                    let imageUrl = '';
-                    if (tagEntry && tagEntry.imageUrl) {
-                        imageUrl = tagEntry.imageUrl;
+                    let imageUrls = [];
+                    if (tagEntry && tagEntry.imageUrls) {
+                        imageUrls = tagEntry.imageUrls;
                     }
+                    let imagesHTML = imageUrls.map(url => `<img src="${url}" alt="${item.title} image" class="blockImage">`).join('');
 
                     // Extract the owner username from the tagsData entry
                     let ownerUsername = '';
@@ -441,15 +443,27 @@
 
                     resultsHtml += `
     <div class="resultItem">
-        ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
+        <div class="searchResultImages">${imagesHTML}</div>
         <div class="owner-username">${ownerUsername}</div>
         <div class="itemTitle">${item.title}</div>
         <!-- <div class="itemAddress">${item.content}</div> -->
         <div class=itemTags>${tagsString}</div>
     </div>
 `;
+
+
+                    matchingBlockNumbers.push(blockNumber);  // Add the block number to the list of matched items
                 }
             }
+
+            if (matchingBlockNumbers.length === 1) {
+        // If only one result, display its blockDetails directly
+        displayBlockDetails(matchingBlockNumbers[0]);
+         // Scroll to its respective block in the table
+    scrollToSearchResult(matchingBlockNumbers[0]);
+        return;  // Exit the function early
+
+    }
 
             if (resultsHtml) { // After the loop, check if any results were added.
                 resultsHtml = '<div id="swipeBar"><img src="images/icons/down.png"></div>' + resultsHtml;  // If there were results, prepend the title.
@@ -657,26 +671,26 @@
         // ============== Copy Address Icon ==============
 
         function copyText() {
-    const textElement = document.getElementById('text-to-copy');
-    const fullAddress = textElement.getAttribute('data-address');
+            const textElement = document.getElementById('text-to-copy');
+            const fullAddress = textElement.getAttribute('data-address');
 
-    // Create a temporary textarea to copy the full address
-    const tempTextArea = document.createElement('textarea');
-    tempTextArea.value = fullAddress;
-    document.body.appendChild(tempTextArea);
-    tempTextArea.select();
+            // Create a temporary textarea to copy the full address
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = fullAddress;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
 
-    // Try copying the selected text
-    try {
-        document.execCommand('copy');
-        console.log('Address copied!');
-    } catch (err) {
-        console.error('Failed to copy text', err);
-    }
+            // Try copying the selected text
+            try {
+                document.execCommand('copy');
+                console.log('Address copied!');
+            } catch (err) {
+                console.error('Failed to copy text', err);
+            }
 
-    // Remove the temporary textarea after copying
-    document.body.removeChild(tempTextArea);
-}
+            // Remove the temporary textarea after copying
+            document.body.removeChild(tempTextArea);
+        }
 
 
         // ============== Toggle LatestIn div ==============

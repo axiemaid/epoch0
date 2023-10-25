@@ -198,7 +198,6 @@ td .content {
   background-color: #fff;
   border-top: 1px solid #e5e5e5;
   /* Optional: Adds a little border on top for distinction. */
-  padding: 0 20px;
   /* Optional: Adds a little space around the content. */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   display: none;
@@ -219,6 +218,21 @@ td .content {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #e5e5e5;
+}
+
+.searchResultImages {
+  display: flex;
+  overflow-x: auto;
+  padding-left: 15px;
+}
+
+.searchResultImages img {
+  flex: 0 0;
+  height: 100px;
+  object-fit: cover;  /* Ensures the image covers the entire content box */
+  object-position: center top;
+  margin-right: 15px;
+  border-radius: 7px;
 }
 
 .blockImage-container { 
@@ -273,9 +287,14 @@ td .content {
   border-bottom: 1px solid #e5e5e5;
 }
 
+.web-link-container a {
+  text-decoration: none;
+  color: black;
+}
+
 .web-link-container img{
   width: 25px;
-  margin-right: 20px;
+  margin-right: 30px;
 }
 
 .itemTags-container {
@@ -304,6 +323,7 @@ td .content {
   margin-top: 10px;
   margin-bottom: 10px;
   width: 30px;
+  margin-left: 15px;
 }
 
 #searchResults.minimized #swipeBar img {
