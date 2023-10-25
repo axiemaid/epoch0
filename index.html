@@ -85,11 +85,11 @@
             <div class="trending-container">
                 <div class="trending-content" data-block-number="722">
                     <img src="images/thumbnail/rcsv-goose.jpg" class="trending-content-img">
-                    <div class="trending-content-title">Geese flock to bitmap</div>
+                    <div class="trending-content-title">Geese flock to RCSV</div>
                     <div class="trending-content-owner">林冲.btc</div>
                     <div class="trending-content-bitmap">722.bitmap</div>
                 </div>
-                <div class="trending-content">
+                <div class="trending-content" data-block-number="8">
                     <img src="images/thumbnail/bitmap-chron.jpg" class="trending-content-img">
                     <div class="trending-content-title">Unearthing digital diamonds</div>
                     <div class="trending-content-owner">8Bit</div>
@@ -166,7 +166,10 @@
 
             // Ensure the div is visible before displaying details
             blockDetailDiv.style.display = 'block';
-            closeContentDiv();
+            blockDetailDiv.scrollTop = 0; // ensures new blockDetail starts at top of scroll
+
+
+            closeContentDiv(); // closes any open trending div
             ShiftUpTable(); // add margin to page bottom when blockDisplay div is open
 
             const item = data.find(entry => entry.title === `${blockNumber}.bitmap`);
@@ -176,10 +179,13 @@
                 const tagsString = tagsEntry ? `<p>Tags: ${tagsEntry.tags.join(', ')}</p>` : '';
 
                 // Extract image URL from the tagsData entry
-                let imageUrl = '';
-                if (tagsEntry && tagsEntry.imageUrl) {
-                    imageUrl = tagsEntry.imageUrl;
+                // Assume imageUrl is now an array
+                let imageUrls = [];
+                if (tagsEntry && tagsEntry.imageUrls) {
+                    imageUrls = tagsEntry.imageUrls;
                 }
+
+                let imagesHTML = imageUrls.map(imageUrls => `<img src="${imageUrls}" alt="${item.title} image" class="blockImage">`).join('');
 
                 // Extract image URL from the tagsData entry
                 let ownerUsername = '';
@@ -225,33 +231,45 @@
                 blockDetailDiv.innerHTML = `
                 <div id="closeButton"><img src="images/icons/down.png"></div>
                 <div class="resultItem">
-
                     <div class="owner-username">${ownerUsername}</div>
                     <div class="itemTitle">${item.title}</div>
-                    ${imageUrl ? `<img src="${imageUrl}" alt="${item.title} image" class="blockImage">` : ''}
-                <div class="logo-list">
-                    ${hasSocialLinks ? '<div class="link-title">Socials</div>' : ''}
-                    <div class="social-links">
-                        <a href="${websiteUrl}" target="_blank">${websiteImage ? `<img src="${websiteImage}" alt="" class="blockdetaillogoicon">` : ''}</a>
-                        <a href="${YTUrl}" target="_blank">${YTimage ? `<img src="${YTimage}" alt="" class="blockdetaillogoicon">` : ''}</a>
-                        <a href="${TwitterUrl}" target="_blank">${TwitterImage ? `<img src="${TwitterImage}" alt="" class="blockdetaillogoicon">` : ''}</a>
-                    </div>
-                    <div class="link-title">Bapp Integrations</div>
-                    <div class="bapp-links">
-                        <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="logos/bapps/rcsv-logo.png" class="blockdetaillogoicon"></a>
-                        <a href="https://mscribe.io/block/${blockNumber}" target="_blank"><img src="logos/bapps/mscribe-logo.png" class="blockdetaillogoicon"></a>
-                        <a href="https://bitmap.community/analyzer/${blockNumber}" target="_blank"><img src="logos/bapps/bitmapcommunity.png" class="blockdetaillogoicon"></a>
-                        <a href="https://bitlords.land/block/${blockNumber}" target="_blank"><img src="logos/bapps/bitlords-logo.png" class="blockdetaillogoicon"></a>
-                        <a href="https://magiceden.io/ordinals/item-details/${item.id}" target="_blank"><img src="logos/bapps/ME-logo.png" class="blockdetaillogoicon"></a>
-                        <a href="https://ordinalswallet.com/inscription/${item.id}" target="_blank"><img src="logos/bapps/OW-logo.png" class="blockdetaillogoicon"></a>
-                    </div>
-                </div>
+                    <div class="blockImage-container">${imagesHTML}</div> 
+                <div class="web-link-wrapper">
+                        <div class="web-link-container">
+                            <img src="images/icons/wallet.png">
+                            <div id="text-to-copy" class="itemAddress" data-address="${item.content}">${formatAddress(item.content)}</div>
+                            <img src="images/copy-icon.png" class="copy-icon" onclick="copyText()">
+                        </div>
 
-                    <div class="itemAddressContainer">
-                        <img src="images/copy-icon.png" class="copy-icon" onclick="copyText()">
-                        <div id="text-to-copy" class="itemAddress">${item.content}</div>
+                           ${websiteUrl ? `
+                          <div class="web-link-container">
+                             <img src="images/icons/globe.png">
+                             <a href="${websiteUrl}">${websiteUrl}</a>
+                             </div>
+                            ` : ''}
+
+                            ${TwitterUrl ? `
+                        <div class="web-link-container">
+                            <img src="images/icons/twitter.png">
+                            <a href="https://twitter.com/${TwitterUrl}">@${TwitterUrl}</a>
+                        </div>
+                        ` : ''}
+                </div>
+                <div class="bapp-container">
+                    <div class="bapp-container-title">Bapp Integrations</div>
+                <div class="bapp-image-container">
+                        <a href="https://bitmap.rcsv.io/?r=${blockNumber}" target="_blank"><img src="images/bapps/rcsv-logo.png"></a>
+                        <a href="https://mscribe.io/block/${blockNumber}" target="_blank"><img src="images/bapps/mscribe-logo.png"></a>
+                        <a href="https://bitmap.community/analyzer/${blockNumber}" target="_blank"><img src="images/bapps/bitmapcommunity.png"></a>
+                        <a href="https://bitlords.land/block/${blockNumber}" target="_blank"><img src="images/bapps/bitlords-logo.png"></a>
+                        <a href="https://magiceden.io/ordinals/item-details/${item.id}" target="_blank"><img src="images/bapps/ME-logo.png"></a>
+                        <a href="https://ordinalswallet.com/inscription/${item.id}" target="_blank"><img src="images/bapps/OW-logo.png"></a>
                     </div>
-                    <div class="itemTags">${tagsString}</div>
+                    </div>
+                    <div class="itemTags-container">
+                        <div class="itemsTags-title">Tags</div>
+                        <div class="itemTags">${tagsString}</div>
+                    </div>
             </div>
         `;
 
@@ -635,25 +653,27 @@
         // ============== Copy Address Icon ==============
 
         function copyText() {
-            const textElement = document.getElementById('text-to-copy');
-            const selection = window.getSelection();
-            const range = document.createRange();
+    const textElement = document.getElementById('text-to-copy');
+    const fullAddress = textElement.getAttribute('data-address');
 
-            // Create a range (selection) for the text element
-            range.selectNodeContents(textElement);
-            selection.removeAllRanges();
-            selection.addRange(range);
+    // Create a temporary textarea to copy the full address
+    const tempTextArea = document.createElement('textarea');
+    tempTextArea.value = fullAddress;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
 
-            // Try copying the selected text
-            try {
-                document.execCommand('copy');
-            } catch (err) {
-                console.error('Failed to copy text', err);
-            }
+    // Try copying the selected text
+    try {
+        document.execCommand('copy');
+        console.log('Address copied!');
+    } catch (err) {
+        console.error('Failed to copy text', err);
+    }
 
-            // Remove the selection after copying
-            selection.removeAllRanges();
-        }
+    // Remove the temporary textarea after copying
+    document.body.removeChild(tempTextArea);
+}
+
 
         // ============== Toggle LatestIn div ==============
 
@@ -734,6 +754,14 @@
             });
         });
 
+        // format item address in block display
+
+        function formatAddress(address) {
+            if (address.length <= 10) {
+                return address;
+            }
+            return address.slice(0, 5) + '...' + address.slice(-5);
+        }
 
     </script>
 

@@ -56,8 +56,10 @@ h6 {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .example {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /*------------------ ---------------*/
@@ -81,7 +83,8 @@ body {
 .search-container {
   position: fixed;
   top: 0;
-  left: 15px; /* The combinmation of left. right and margin auto keeps fixed element centered*/
+  left: 15px;
+  /* The combinmation of left. right and margin auto keeps fixed element centered*/
   right: 15px;
   z-index: 1000;
   display: flex;
@@ -102,7 +105,8 @@ body {
   border: 1px solid #fff;
   border-radius: 23px;
   flex-grow: 1;
-  padding: 9px 0 8px 20px; /* top padding a 1px higher to center placeholder text */
+  padding: 9px 0 8px 20px;
+  /* top padding a 1px higher to center placeholder text */
 }
 
 #clearInputButton {
@@ -140,7 +144,8 @@ table {
   color: #afafaf;
   text-align: center;
   width: 100%;
-  table-layout: fixed; /* Ensures even distribution of column width */
+  table-layout: fixed;
+  /* Ensures even distribution of column width */
   border-spacing: 5px;
   margin: 80px auto 20px auto;
   padding: 5px;
@@ -154,11 +159,14 @@ td {
 
 td .content {
   aspect-ratio: 1 / 1;
-  overflow: hidden; /* To ensure content doesn't spill out */
+  overflow: hidden;
+  /* To ensure content doesn't spill out */
   /* Flexbox styles for centering */
   display: flex;
-  align-items: center; /* Vertical centering */
-  justify-content: center; /* Horizontal centering */
+  align-items: center;
+  /* Vertical centering */
+  justify-content: center;
+  /* Horizontal centering */
 }
 
 /* Cell Highlights */
@@ -171,10 +179,12 @@ td .content {
 }
 
 .highlightClick {
-  background-color: #EA4335; /* #EA4335 light red */
+  background-color: #EA4335;
+  /* #EA4335 light red */
   color: #fff;
   font-weight: bold;
-  outline: 1px solid #dd4133;  /* #B21511 dark red*/
+  outline: 1px solid #dd4133;
+  /* #B21511 dark red*/
 }
 
 /* ================ Search results ================ */
@@ -183,73 +193,113 @@ td .content {
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 0; /* This will stretch the div across the full width of the page. */
+  right: 0;
+  /* This will stretch the div across the full width of the page. */
   background-color: #fff;
-  border-top: 1px solid #e5e5e5; /* Optional: Adds a little border on top for distinction. */
-  padding: 0 20px; /* Optional: Adds a little space around the content. */
+  border-top: 1px solid #e5e5e5;
+  /* Optional: Adds a little border on top for distinction. */
+  padding: 0 20px;
+  /* Optional: Adds a little space around the content. */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  display: none; /* By default, it should be hidden. */
-  z-index: 1000; /* To ensure it's always on top. */
+  display: none;
+  /* By default, it should be hidden. */
+  z-index: 1000;
+  /* To ensure it's always on top. */
   height: 60vh;
   overflow-y: auto;
   max-width: 500px;
   margin: 0 auto;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  /*transition: height 0.3s ease-in-out;*/  /* Adjust the duration (0.3s) as needed */
+  /*transition: height 0.3s ease-in-out;*/
+  /* Adjust the duration (0.3s) as needed */
 }
 
-.resultItem {
+.resultItem { /*searchResult item*/
   margin-bottom: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #e5e5e5; 
+  border-bottom: 1px solid #e5e5e5;
 }
 
-.blockImage {
-  width: 100px;
+.blockImage-container { 
+  display: flex;
+  overflow-x: auto;
+  margin-top: 10px;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.blockImage-container img {
+  flex: 0 0;
+  height: 250px;
+  object-fit: cover;  /* Ensures the image covers the entire content box */
+  object-position: center top;
+  margin-right: 15px;
+  border-radius: 10px;
 }
 
 .owner-username {
   font-weight: 500;
   font-size: 1.25em;
-  margin-top: 15px;
+  margin-left: 15px;
 }
 
-.itemTitle { /* bitmap number*/
+.itemTitle {  /* bitmap number*/
   color: #333;
-  margin-top: 5px;
-}
-
-.itemAddressContainer {
-  display: flex;
-  margin-top: 5px;
-  word-break: break-all;
-  align-items: flex-start;
+  margin: 5px 15px 0 15px;
 }
 
 .copy-icon {
-  margin-right: 5px;
+  margin-left: 10px;
   margin-top: 2px;
   margin-bottom: 3px;
   align-items: flex-start;
 }
 
 .itemAddress {
-  color :#555;
   font-size: 0.95em;
 }
 
+.web-link-wrapper {
+  margin-left: 15px;
+}
+
+.web-link-container {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.web-link-container img{
+  width: 25px;
+  margin-right: 20px;
+}
+
+.itemTags-container {
+  margin: 0 15px;
+}
+
+.itemsTags-title {
+  font-size: 1.05em;
+  font-weight: 500;
+  margin-top: 15px;
+}
+
 .itemTags {
-  color :#555;
+  color: #555;
   font-size: 0.95em;
 }
 
 #searchResults.minimized {
-  height: 50px; /* Or whatever height you want for the minimized bar */
+  height: 50px;
+  /* Or whatever height you want for the minimized bar */
   overflow: hidden;
 }
 
-#swipeBar img{
+#swipeBar img {
   cursor: pointer;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -264,33 +314,40 @@ td .content {
 /* ========================= Block Details Box ============================ */
 
 #blockDetails {
+  display: none;
   position: fixed;
   bottom: 0;
   left: 0;
-  right: 0; /* This will stretch the div across the full width of the page. */
+  right: 0;
+  height: 60vh;
+  max-width: 500px;
   background-color: #fff;
   /* border-top: 1px solid #e5e5e5; */
-  padding: 0 20px; 
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; 
-  display: none; /* By default, it should be hidden. */
-  z-index: 1000;
-  height: 60vh;
-  overflow-y: auto;
-  max-width: 500px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   margin: 0 auto;
+  overflow-y: auto;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  z-index: 1000;
 }
 
-#closeButton img{
+#closeButton {
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  padding: 10px 0;
+  background-color: white;;
+}
+
+#closeButton img {
   width: 30px;
   cursor: pointer;
-  margin: 10px 0;
   transform: rotate(90deg);
 }
 
 #pageContent {
-  transition: transform 0.3s ease; /* Smooth transition for moving content */
+  transition: transform 0.3s ease;
+  /* Smooth transition for moving content */
 }
 
 .link-title {
@@ -311,8 +368,9 @@ td .content {
 }
 
 .blockdetaillogoicon {
-  width: 45px;
+  width: 60px;
   margin-right: 15px;
+  border-radius: 5px;
 }
 
 /* ========================= Loading icon ============================ */
@@ -321,13 +379,15 @@ td .content {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;   /* This will make it centered on the viewport */
+  position: fixed;
+  /* This will make it centered on the viewport */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff; 
-  z-index: 9999;   /* Ensure it's on top of other content */
+  background-color: #fff;
+  z-index: 9999;
+  /* Ensure it's on top of other content */
 }
 
 .loading-circle {
@@ -343,12 +403,13 @@ td .content {
 }
 
 @keyframes rotateSquare {
-    0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 /* ========================= Trending toggle ============================ */
@@ -358,12 +419,15 @@ td .content {
   background-color: #fff;
   width: 100%;
   max-width: 500px;
-  height: 400px; /* 50% of the viewport height */
-  bottom: 0; /* Start at the bottom of the screen */
+  height: 400px;
+  /* 50% of the viewport height */
+  bottom: 0;
+  /* Start at the bottom of the screen */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  transition: 0.4s; /* Smooth transition effect */
+  transition: 0.4s;
+  /* Smooth transition effect */
   z-index: 1001;
 }
 
@@ -383,6 +447,10 @@ td .content {
   flex: 0 0 260px;
   margin-right: 20px;
   cursor: pointer;
+}
+
+.trending-content-img {
+  border-radius: 10px;
 }
 
 .trending-content-title {
@@ -405,29 +473,74 @@ td .content {
 #toggleButton {
   width: 50px;
   height: 50px;
-  border-radius: 50%; /* Makes the button a circle */
+  border-radius: 50%;
+  /* Makes the button a circle */
   background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   position: fixed;
-  right: 20px; /* 20px from the right side of the screen */
-  bottom: 420px; /* Just above the content div */
+  right: 20px;
+  /* 20px from the right side of the screen */
+  bottom: 420px;
+  /* Just above the content div */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   transition: 0.4s;
-  z-index: 1; /* Make sure the button is on top of the content div */
+  z-index: 1;
+  /* Make sure the button is on top of the content div */
 }
 
 #toggleButton img {
   width: 30px;
 }
 
-.hidden { /* When content div is hidden */
-  transform: translateY(100%); /* Slide it down out of view */
+.hidden {
+  /* When content div is hidden */
+  transform: translateY(100%);
+  /* Slide it down out of view */
 }
 
 
-#toggleButton.move { /* Adjust the button position when content div is hidden */
+#toggleButton.move {
+  /* Adjust the button position when content div is hidden */
   bottom: 65px;
+}
+
+/* BAPP icons */
+
+.bapp-container {
+  margin: 0 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.bapp-container-title {
+  font-size: 1.05em;
+  font-weight: 500;
+  margin-top: 15px;
+}
+
+.bapp-image-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px; /* Adjust this value for desired padding */
+  margin: 15px 0;
+}
+
+
+
+.bapp-image-container a {
+  width: calc((100% - 50px) / 6);
+  flex: 0 0 auto;
+  text-decoration: none; /* Removes the default underline from links */
+  display: block; /* Ensures the anchor tag behaves as a block element for layout purposes */
+}
+
+.bapp-image-container img {
+  width: 100%; /* This ensures the image fills the width of the anchor tag */
+  height: auto;
+  object-fit: cover; /* Optional: Ensure the aspect ratio of the images is maintained */
+  border-radius: 5px;
 }

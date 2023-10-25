@@ -55,11 +55,9 @@ const tagsData = [
         block: 67,
         ownerUsername: "CRFTD",
         tags: ["CRFTD", "art", "bLOCKHeadz", "City", "Pristine", "Punk" ],
-        imageUrl: "images/crftd.png",
+        imageUrls: ["images/crftd.png", "images/crftd/bitmap-city.jpg", "images/crftd/punkmap.jpg",],
         websiteUrl: "https://www.crftdla.com/", 
-        websiteImage: "logos/crftd-logo.jpg",
-        TwitterUrl: "https://twitter.com/_CRFTD_",
-        TwitterImage: "logos/x-logo.png"
+        TwitterUrl: "_CRFTD_",
     },
     {
         block: 87,
@@ -71,13 +69,12 @@ const tagsData = [
         block: 91,
         ownerUsername: "The Block Runner",
         tags: ["Block", "Runner", "Iman", "Will", "Podcast", "YouTube"],
-        imageUrl: "images/blockrunner.png",
+        imageUrls: ["images/blockrunner.png",],
         websiteUrl: "https://smartlink.metricool.com/public/smartlink/the-block-runner/", 
         websiteImage: "logos/blockrunner-logo.png", 
         YTUrl: "https://www.youtube.com/@TheBlockRunner",
         YTimage: "logos/youtube-logo.png",
         TwitterUrl: "https://twitter.com/TheBlockRunner",
-        TwitterImage: "logos/x-logo.png"
     },
     {
         block: 100,
@@ -144,7 +141,7 @@ const tagsData = [
         block: 609,
         tags: ["bop.xbt", "bop", "boppleton", "borosilicate", "punk", "Three.js"],
         TwitterUrl: "https://twitter.com/boppleton",
-        TwitterImage: "logos/x-logo.png" 
+        TwitterImage: "logos/x-logo.png", 
     },
     {
         block: 710,
@@ -161,6 +158,7 @@ const tagsData = [
     },
     {
         block: 722,
+        ownerUsername: "林冲.btc",
         tags: ["林冲", "jackle_eth", "jackle"],
         TwitterUrl: "https://twitter.com/jackle_eth",
         TwitterImage: "logos/x-logo.png" 
