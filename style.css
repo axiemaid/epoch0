@@ -323,7 +323,6 @@ td .content {
   max-width: 500px;
   background-color: #fff;
   /* border-top: 1px solid #e5e5e5; */
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   margin: 0 auto;
   overflow-y: auto;
 
@@ -336,7 +335,7 @@ td .content {
   z-index: 1001;
   padding: 10px 0;
   background-color: white;
-  margin-top: 1px;
+  margin-top: 10px;
 }
 
 #closeButton img {
