@@ -326,6 +326,7 @@ td .content {
   margin: 0 auto;
   overflow-y: auto;
   border-top-left-radius: 100% 1px;
+  border-top-right-radius: 100% 1px;
   z-index: 1;
 }
 
