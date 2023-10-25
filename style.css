@@ -325,12 +325,11 @@ td .content {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   margin: 0 auto;
   overflow-y: auto;
-  border-top-left-radius: 100% 1px;
-  border-top-right-radius: 100% 1px;
   z-index: 1;
 }
 
 #closeButton {
+  position: -webkit-sticky;
   position: sticky;
   top: 0px;
   z-index: 1;
