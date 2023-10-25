@@ -236,7 +236,7 @@ td .content {
   object-fit: cover;  /* Ensures the image covers the entire content box */
   object-position: center top;
   margin-right: 15px;
-  border-radius: 10px;
+  border-radius: 7px;
 }
 
 .owner-username {
@@ -325,14 +325,15 @@ td .content {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   margin: 0 auto;
   overflow-y: auto;
-  z-index: 1;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: 1000;
 }
 
 #closeButton {
-  position: -webkit-sticky;
   position: sticky;
   top: 0px;
-  z-index: 1;
+  z-index: 1000;
   padding: 10px 0;
   background-color: white;
   
@@ -342,6 +343,7 @@ td .content {
   width: 30px;
   cursor: pointer;
   transform: rotate(90deg);
+  margin-left: 10px;
 }
 
 #pageContent {
