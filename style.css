@@ -232,7 +232,7 @@ td .content {
 
 .blockImage-container img {
   flex: 0 0;
-  height: 250px;
+  height: 240px;
   object-fit: cover;  /* Ensures the image covers the entire content box */
   object-position: center top;
   margin-right: 15px;
@@ -322,20 +322,23 @@ td .content {
   height: 60vh;
   max-width: 500px;
   background-color: #fff;
-  /* border-top: 1px solid #e5e5e5; */
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   margin: 0 auto;
   overflow-y: auto;
-
-  z-index: 1000;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: 1;
 }
 
 #closeButton {
   position: sticky;
-  top: 0;
-  z-index: 1001;
+  top: 0px;
+  z-index: 1;
   padding: 10px 0;
   background-color: white;
-  margin-top: 10px;
+  border: 2px solid #ddd;  /* or any color that fits your design */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
 }
 
 #closeButton img {
