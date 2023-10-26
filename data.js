@@ -3,20 +3,17 @@ const tagsData = [
         block: 0,
         ownerUsername: "Bitoshi Blockamoto",
         tags: ["bitoshi", "blockamoto", "genesis", "zero", "bitmap.land"],
-        imageUrl: "images/bitoshi.jpg",
-        TwitterUrl: "https://twitter.com/blockamotoo",
-        TwitterImage: "logos/x-logo.png",
+        imageUrls: ["images/blockamoto/blockamoto-pfp.jpg" ,"images/blockamoto/bitoshi.jpg",],
+        websiteUrl: "https://bitmap.land/", 
+        TwitterUrl: "blockamoto",
     },
     {
         block: 3,
         ownerUsername: "Metavoxelz",
         tags: ["Metavoxelz", "voxel", "art"],
-        imageUrl: "images/metavoxelz.jpg",
-        websiteUrl: "https://linktr.ee/metavoxelz", 
-        websiteImage: "logos/metavoxelz-logo.png",
-        TwitterUrl: "https://twitter.com/Metavoxelz",
-        TwitterImage: "logos/x-logo.png",
-
+        imageUrls: ["images/metavoxelz/metavoxelz.jpg"],
+        websiteUrl: "https://linktr.ee/metavoxelz",
+        TwitterUrl: "Metavoxelz",
     },
     {
         block: 8,
@@ -25,29 +22,23 @@ const tagsData = [
         imageUrls: ["images/8bit/8bit-pfp.jpg", "images/8bit/decentralized-diamond-co.jpg", "images/8bit/bitmap-punk.jpg", "images/8bit/8bit.png", "images/8bit/ordlibrary.jpg"],
         websiteUrl: "https://ordlibrary.com/",
         TwitterUrl: "therecursed",
+        bitmapValleyUrl: "yes",
     },
     {
         block: 9,
         ownerUsername: "9.bitmap",
         tags: ["9", "block9ine", "Blix", "music", "art", "nine"],
-        imageUrl: "images/9bitmap.jpg",
+        imageUrls: ["images/blocknine/9bitmap.jpg" ,"images/blocknine/blix-img.png"],
         websiteUrl: "https://blix.wtf//", 
-        websiteImage: "logos/blix-logo.png",
-        TwitterUrl: "https://twitter.com/block9ine",
-        TwitterImage: "logos/x-logo.png"
-    },
-    {
-        block: 33,
-        tags: ["H.bitmap", "limanbit"],
-        TwitterUrl: "https://twitter.com/limanbit",
-        TwitterImage: "logos/x-logo.png"
+        TwitterUrl: "block9ine",
     },
     {
         block: 65,
+        ownerUsername: "Benbuiz",
         tags: ["ghb.eth", "ghb", "benbuiz"],
+        imageUrls: ["images/benbuiz/benbuiz.jpg"],
         imageUrl: "images/benbuiz.jpg",
-        TwitterUrl: "https://twitter.com/benbuiz",
-        TwitterImage: "logos/x-logo.png"
+        TwitterUrl: "benbuiz",
     },
     {
         block: 67,
@@ -60,31 +51,29 @@ const tagsData = [
     {
         block: 87,
         tags: ["0xValue", "Value0x"],
-        TwitterUrl: "https://twitter.com/Value0x",
-        TwitterImage: "logos/x-logo.png"
+        imageUrls: [""],
+        TwitterUrl: "Value0x",
     },
     {
         block: 91,
         ownerUsername: "The Block Runner",
         tags: ["Block", "Runner", "Iman", "Will", "Podcast", "YouTube"],
         imageUrls: ["images/blockrunner/tbr-logo.png", "images/blockrunner/firstepisode.jpg", "images/blockrunner/blockrunner.png",],
-        websiteUrl: "https://www.theblockrunner.com/", 
-        websiteImage: "logos/blockrunner-logo.png", 
+        websiteUrl: "https://www.theblockrunner.com/",
         YTUrl: "https://www.youtube.com/@TheBlockRunner",
-        YTimage: "logos/youtube-logo.png",
-        TwitterUrl: "https://twitter.com/TheBlockRunner",
+        TwitterUrl: "TheBlockRunner",
     },
     {
         block: 100,
         ownerUsername: "iman.sats",
+        imageUrls: ["images/iman/iman.jpg"],
         tags: ["iman.sats", "Iman", "Block", "Runner", "Podcast", "YouTube"],
-        imageUrl: "images/iman.jpg",
-        TwitterUrl: "https://twitter.com/iman_blockrun",
-        TwitterImage: "logos/x-logo.png"
+        TwitterUrl: "iman_blockrun",
     },
     {
         block: 108,
         tags: ["Squid Game Club", "Squid", "Game", "DynamikeGuo"],
+        imageUrls: [],
         TwitterUrl: "https://twitter.com/DynamikeGuo",
         TwitterImage: "logos/x-logo.png"
     },
@@ -92,123 +81,137 @@ const tagsData = [
         block: 154,
         ownerUsername: "Apollo11.btc",
         tags: ["Apollo11.btc", "Apollo11", "apollo"],
+        imageUrls: [],
         TwitterUrl: "https://twitter.com/dcfwd",
         TwitterImage: "logos/x-logo.png"
     },
     {
         block: 171,
+        ownerUsername: "A2E",
         tags: ["A2E"],
-        TwitterUrl: "https://twitter.com/A2E_A2E",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: [],
+        TwitterUrl: "A2E_A2E", 
     },
     {
         block: 353,
+        ownerUsername: "NRCHST",
         tags: ["NRCHST", "NRCHST.sats", "NRCHSTx"],
-        TwitterUrl: "https://twitter.com/NRCHSTx",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: [],
+        TwitterUrl: "NRCHSTx",
     },
     {
         block: 382,
+        ownerUsername: "madi.x",
         tags: ["madi.x", "madix", "og.bitmap"],
-        imageUrl: "images/madix.jpg",
-        TwitterUrl: "https://twitter.com/forsure_madix",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: ["images/madix/madix.jpg"],
+        TwitterUrl: "forsure_madix",
     },
     {
         block: 444,
+        ownerUsername: "ET",
         tags: ["ET"],
-        imageUrl: "images/ET.png",
-        TwitterUrl: "https://twitter.com/444bitmap",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: ["images/et/et.png"],
+        TwitterUrl: "444bitmap", 
     },
     {
         block: 502,
-        tags: ["999 Club", "999", "sub", "1K"],
-        imageUrl: "images/999club.jpg",
-        TwitterUrl: "https://twitter.com/The999Club_",
-        TwitterImage: "logos/x-logo.png" 
+        ownerUsername: "999 Club",
+        tags: ["999", "Club", "sub", "1K"],
+        imageUrls: ["images/999club/999club.jpg"],
+        TwitterUrl: "The999Club_",
     },
     {
         block: 505,
-        tags: ["axiemaid"],
-        imageUrl: "images/axiemaid.jpg",
-        TwitterUrl: "https://twitter.com/axiemaid",
-        TwitterImage: "logos/x-logo.png" 
+        ownerUsername: "axiemaid",
+        tags: ["axiemaid", "axie", "bitmap.directory", "directory"],
+        imageUrls: ["images/axiemaid/axiemaid.jpg"],
+        websiteUrl: "http://bitmap.directory/", 
+        TwitterUrl: "axiemaid",
     },
     {
         block: 609,
-        tags: ["bop.xbt", "bop", "boppleton", "borosilicate", "punk", "Three.js"],
-        TwitterUrl: "https://twitter.com/boppleton",
-        TwitterImage: "logos/x-logo.png", 
+        ownerUsername: "bop.xbt",
+        tags: ["bop.xbt", "bop", "boppleton", "borosilicate", "boropunk", "pixelpunk", "pixel", "punk", "punks", "Three.js", "js"],
+        imageUrls: ["images/bop/bop.jpg" ,"images/bop/boropunk.jpg", "images/bop/pixelpunk.jpg"],
+        TwitterUrl: "boppleton",
     },
     {
         block: 710,
+        ownerUsername: "Boyster",
         tags: ["boyster", "oil"],
-        TwitterUrl: "https://twitter.com/Boysterbro",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: [],
+        TwitterUrl: "Boysterbro",
     },
     {
         block: 714,
+        ownerUsername: "LostPoet.sats",
         tags: ["LostPoet.sats", "lost", "poet", "music", "musician", "writer"],
-        imageUrl: "images/lostpoet.jpg",
-        TwitterUrl: "https://twitter.com/LostPoet",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: ["images/lostpoet/lostpoet.jpg"],
+        TwitterUrl: "LostPoet",
     },
     {
         block: 722,
         ownerUsername: "林冲.btc",
-        tags: ["林冲", "jackle_eth", "jackle"],
-        TwitterUrl: "https://twitter.com/jackle_eth",
-        TwitterImage: "logos/x-logo.png" 
+        tags: ["林冲", "jackle_eth", "jackle", "goosinals"],
+        imageUrls: ["images/jackle/jackle.jpg"],
+        TwitterUrl: "jackle_eth",
     },
     {
         block: 733,
-        tags: ["Non Fungible Gentleman", "NftDiscoMan"],
-        TwitterUrl: "https://twitter.com/NftDiscoMan",
-        TwitterImage: "logos/x-logo.png" 
+        ownerUsername: "Non Fungible Gentleman",
+        tags: ["Non Fungible Gentleman", "NftDiscoMan", "NFT", "DiscoMan", "Disco"],
+        imageUrls: ["images/nftdiscoman/discoman.jpg"],
+        TwitterUrl: "NftDiscoMan", 
     },
     {
         block: 786,
+        ownerUsername: "Crypto Fox",
         tags: ["Crypto Fox", "fox", "hotmonkeydeals", "RecursiveX"],
-        imageUrl: "images/cryptofox.jpg",
-        TwitterUrl: "https://twitter.com/hotmonkeydeals",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: ["images/cryptofox/cryptofox.jpg"],
+        TwitterUrl: "hotmonkeydeals",
     },
     {
         block: 792,
+        ownerUsername: "athos",
         tags: ["athos", "espionagesats"],
-        imageUrl: "images/athos.jpg",
-        TwitterUrl: "https://twitter.com/espionagesats",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: ["images/athos/athos.jpg"],
+        TwitterUrl: "espionagesats",
+    },
+    {
+        block: 817,
+        ownerUsername: "817.bitmap",
+        tags: ["Three", "Cycles", "fightclub.eth", "ENS"],
+        imageUrls: ["images/threecycles/threecycles.jpg"],
+        TwitterUrl: "ThreeCycles",
     },
     {
         block: 980,
+        ownerUsername: "wealth.bitmap",
         tags: ["wealth.bitmap", "wealth", "ordinal.club", "ammdex"],
-        imageUrl: "images/axiemaid.jpg",
-        TwitterUrl: "https://twitter.com/ammdex",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: ["images/wealth/wealth.jpg"],
+        TwitterUrl: "ammdex",
     },
     {
         block: 1051,
         ownerUsername: "BenjaminsCartel.btc",
-        tags: ["BenjaminsCartel.btc", "Benjamins", "Cartel", "art", "Ben"],
-        imageUrl: "images/bencartel.jpg",
+        tags: ["BenjaminsCartel.btc", "Benjamins", "Cartel", "art", "Ben", "BitArtifacts"],
+        imageUrls: ["images/benjaminsCartel/bencartel.jpg", "images/benjaminsCartel/bitartifacts.png"],
         websiteUrl: "https://ordinalswallet.com/collection/benjamins-cartel-btc", 
-        websiteImage: "logos/bencartel-logo.jpg",
-        TwitterUrl: "https://twitter.com/3eyondLabs",
-        TwitterImage: "logos/x-logo.png" 
+        TwitterUrl: "3eyondLabs",
     },
     {
         block: 1470,
-        tags: ["Nefu.sats", "Nefu,"],
-        TwitterUrl: "https://twitter.com/0xNefu",
-        TwitterImage: "logos/x-logo.png" 
+        ownerUsername: "Nefu.sats",
+        tags: ["Nefu.sats", "Nefu",],
+        imageUrls: ["images/nefu/nefu-pfp.jpg"],
+        TwitterUrl: "0xNefu", 
     },
     {
         block: 1970,
+        ownerUsername: "Boyster",
         tags: ["boyster"],
-        TwitterUrl: "https://twitter.com/Boysterbro",
-        TwitterImage: "logos/x-logo.png" 
+        imageUrls: [],
+        TwitterUrl: "Boysterbro", 
     },
 
     // ... more entries ...
