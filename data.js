@@ -171,6 +171,13 @@ const tagsData = [
         TwitterUrl: "NftDiscoMan", 
     },
     {
+        block: 777,
+        ownerUsername: "BITMAPSTR",
+        tags: ["BITMAPSTR"],
+        imageUrls: ["images/bitmapstr/bitmapstr.png"],
+        TwitterUrl: "bitmapstr"
+    },
+    {
         block: 786,
         ownerUsername: "Crypto Fox",
         tags: ["Crypto Fox", "fox", "hotmonkeydeals", "RecursiveX"],
