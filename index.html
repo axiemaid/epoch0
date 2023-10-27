@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Search with JavaScript</title>
+    <title>Search Engine - Epoch 0</title>
     <link rel="stylesheet" href="style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,6 +55,11 @@
         <div class="loading-circle"></div>
     </div>
 
+    <div id="notification">
+        Address copied!
+    </div>
+
+
 
     <div class="content-container">
         <div id="pageContent">
@@ -97,7 +102,7 @@
                     <div class="trending-content-bitmap">8.bitmap</div>
                     <div id="blockCount2" class="post-age">Loading...</div>
                 </div>
-                <div class="trending-content">
+                <div class="trending-content" data-block-number="91">
                     <img src="images/thumbnail/tbr-atomicals.jpg" class="trending-content-img">
                     <div class="trending-content-title">TBR interviews Atomicals</div>
                     <div class="trending-content-owner">The Block Runner</div>
@@ -258,17 +263,17 @@
                              </div>
                             ` : ''}
 
+                            ${YTUrl ? `
+                        <div class="web-link-container">
+                            <img src="images/icons/youtube.png">
+                            <a href="${YTUrl}" target="_blank">${YTUrl}</a>
+                        </div>
+                        ` : ''}
+
                             ${TwitterUrl ? `
                         <div class="web-link-container">
                             <img src="images/icons/twitter.png">
                             <a href="https://twitter.com/${TwitterUrl}" target="_blank">@${TwitterUrl}</a>
-                        </div>
-                        ` : ''}
-
-                        ${YTUrl ? `
-                        <div class="web-link-container">
-                            <img src="images/icons/youtube.png">
-                            <a href="${YTUrl}" target="_blank">${YTUrl}</a>
                         </div>
                         ` : ''}
 
@@ -414,51 +419,51 @@
         //--------------------
 
         function performSearch() {
-    closeContentDiv();
-    removeHighlightFromAllCells();
-    restoreSearchResults();
-    document.getElementById('blockDetails').style.display = 'none';
+            closeContentDiv();
+            removeHighlightFromAllCells();
+            restoreSearchResults();
+            document.getElementById('blockDetails').style.display = 'none';
 
-    const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase();
 
-    if (!query.trim()) {
-        return;
-    }
-
-    const tokens = query.split(' ').filter(token => token.trim() !== '');
-    const resultsDiv = document.getElementById('searchResults');
-    let resultsHtml = '';
-    let matchingBlockNumbers = [];
-    
-    // This list will collect all search results
-    let searchResults = [];
-
-    for (let item of data) {
-        const titleMatches = tokens.every(token => item.title.toLowerCase().includes(token));
-        const contentMatches = query.length > 7 && tokens.every(token => item.content.toLowerCase().includes(token));
-        const tagEntry = tagsData.find(entry => entry.block == item.title.split(".")[0]);
-        const tagMatches = tagEntry ? tokens.some(token => tagEntry.tags.map(tag => tag.toLowerCase()).includes(token)) : false;
-
-        if (titleMatches || contentMatches || tagMatches) {
-            highlightBlock(item);
-            const blockNumber = item.title.split(".")[0];
-            document.getElementById(`block_${blockNumber}`).classList.add('highlightSearchResult');
-            
-            const tagsString = tagEntry ? `<p>Tags: ${tagEntry.tags.join(', ')}</p>` : '';
-            let imageUrls = [];
-            if (tagEntry && tagEntry.imageUrls) {
-                imageUrls = tagEntry.imageUrls;
-            }
-            let imagesHTML = imageUrls.map(url => `<img src="${url}" alt="${item.title} image" class="blockImage">`).join('');
-
-            let ownerUsername = '';
-            if (tagEntry && tagEntry.ownerUsername) {
-                ownerUsername = tagEntry.ownerUsername;
+            if (!query.trim()) {
+                return;
             }
 
-            searchResults.push({
-                blockNumber,
-                html: `
+            const tokens = query.split(' ').filter(token => token.trim() !== '');
+            const resultsDiv = document.getElementById('searchResults');
+            let resultsHtml = '';
+            let matchingBlockNumbers = [];
+
+            // This list will collect all search results
+            let searchResults = [];
+
+            for (let item of data) {
+                const titleMatches = tokens.every(token => item.title.toLowerCase().includes(token));
+                const contentMatches = query.length > 7 && tokens.every(token => item.content.toLowerCase().includes(token));
+                const tagEntry = tagsData.find(entry => entry.block == item.title.split(".")[0]);
+                const tagMatches = tagEntry ? tokens.some(token => tagEntry.tags.map(tag => tag.toLowerCase()).includes(token)) : false;
+
+                if (titleMatches || contentMatches || tagMatches) {
+                    highlightBlock(item);
+                    const blockNumber = item.title.split(".")[0];
+                    document.getElementById(`block_${blockNumber}`).classList.add('highlightSearchResult');
+
+                    const tagsString = tagEntry ? `<p>Tags: ${tagEntry.tags.join(', ')}</p>` : '';
+                    let imageUrls = [];
+                    if (tagEntry && tagEntry.imageUrls) {
+                        imageUrls = tagEntry.imageUrls;
+                    }
+                    let imagesHTML = imageUrls.map(url => `<img src="${url}" alt="${item.title} image" class="blockImage">`).join('');
+
+                    let ownerUsername = '';
+                    if (tagEntry && tagEntry.ownerUsername) {
+                        ownerUsername = tagEntry.ownerUsername;
+                    }
+
+                    searchResults.push({
+                        blockNumber,
+                        html: `
     <div class="resultItem">
         <div class="searchResultImages">${imagesHTML}</div>
         <div class="searchResultOwnerUsername">${ownerUsername}</div>
@@ -466,60 +471,60 @@
         <div class="searchResultItemTags">${tagsString}</div>
     </div>
 `
+                    });
+
+                    matchingBlockNumbers.push(blockNumber);
+                }
+            }
+
+            // Sort the searchResults array based on blockNumber in increasing order
+            searchResults.sort((a, b) => parseInt(a.blockNumber) - parseInt(b.blockNumber));
+
+            // Generate the resultsHtml from the sorted searchResults array
+            for (let result of searchResults) {
+                resultsHtml += result.html;
+            }
+
+            if (matchingBlockNumbers.length === 1) {
+                displayBlockDetails(matchingBlockNumbers[0]);
+                scrollToSearchResult(matchingBlockNumbers[0]);
+                highlightCellDirectly(matchingBlockNumbers[0]);
+                return;
+            }
+
+            if (resultsHtml) {
+                resultsHtml = '<div id="swipeBar"><img src="images/icons/down.png"></div>' + resultsHtml;
+            } else {
+                resultsHtml = '<p>Sorry, no results found.</p>';
+            }
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = resultsHtml;
+
+            ShiftUpTable();
+            const swipeBar = document.getElementById('swipeBar');
+            swipeBar.addEventListener('click', toggleSearchResults);
+
+            document.querySelectorAll('.resultItem').forEach(itemDiv => {
+                itemDiv.addEventListener('click', function () {
+                    const blockNumber = this.querySelector('.searchResultItemTitle').textContent.split('.')[0];
+                    displayBlockDetails(blockNumber);
+
+                    if (currentHighlightedCell) {
+                        currentHighlightedCell.classList.remove('highlightClick');
+                    }
+
+                    const cell = getCellForBlock(blockNumber);
+                    if (cell) {
+                        cell.classList.add('highlightClick');
+                        currentHighlightedCell = cell;
+                    }
+
+                    scrollToResultItem(blockNumber);
+                });
             });
 
-            matchingBlockNumbers.push(blockNumber);
+            scrollToFirstSearchResult(resultsDiv);
         }
-    }
-
-    // Sort the searchResults array based on blockNumber in increasing order
-    searchResults.sort((a, b) => parseInt(a.blockNumber) - parseInt(b.blockNumber));
-
-    // Generate the resultsHtml from the sorted searchResults array
-    for (let result of searchResults) {
-        resultsHtml += result.html;
-    }
-
-    if (matchingBlockNumbers.length === 1) {
-        displayBlockDetails(matchingBlockNumbers[0]);
-        scrollToSearchResult(matchingBlockNumbers[0]);
-        highlightCellDirectly(matchingBlockNumbers[0]);
-        return;
-    }
-
-    if (resultsHtml) {
-        resultsHtml = '<div id="swipeBar"><img src="images/icons/down.png"></div>' + resultsHtml;
-    } else {
-        resultsHtml = '<p>Sorry, no results found.</p>';
-    }
-    resultsDiv.style.display = 'block';
-    resultsDiv.innerHTML = resultsHtml;
-
-    ShiftUpTable();
-    const swipeBar = document.getElementById('swipeBar');
-    swipeBar.addEventListener('click', toggleSearchResults);
-
-    document.querySelectorAll('.resultItem').forEach(itemDiv => {
-        itemDiv.addEventListener('click', function () {
-            const blockNumber = this.querySelector('.searchResultItemTitle').textContent.split('.')[0];
-            displayBlockDetails(blockNumber);
-
-            if (currentHighlightedCell) {
-                currentHighlightedCell.classList.remove('highlightClick');
-            }
-
-            const cell = getCellForBlock(blockNumber);
-            if (cell) {
-                cell.classList.add('highlightClick');
-                currentHighlightedCell = cell;
-            }
-
-            scrollToResultItem(blockNumber);
-        });
-    });
-
-    scrollToFirstSearchResult(resultsDiv);
-}
 
 
 
@@ -694,6 +699,9 @@
             try {
                 document.execCommand('copy');
                 console.log('Address copied!');
+
+                // Show notification
+                showNotification();
             } catch (err) {
                 console.error('Failed to copy text', err);
             }
@@ -702,6 +710,19 @@
             document.body.removeChild(tempTextArea);
         }
 
+        // show notification on address copy
+
+        function showNotification() {
+            const notification = document.getElementById('notification');
+
+            // Add active class to the notification
+            notification.classList.add('active');
+
+            // Remove the active class after 2 seconds, making it fade out
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 2000);
+        }
 
         // ============== Toggle LatestIn div ==============
 
@@ -812,7 +833,7 @@
         trac.connect();
 
         function displayBlocksSince(givenBlockNumber, elementId) {
-            trac.on('response', function(msg) {
+            trac.on('response', function (msg) {
                 // Check if the response is for the 'latestBlock' function
                 if (msg.func === 'latestBlock') {
                     const blocksSince = msg.result - givenBlockNumber;
@@ -820,7 +841,7 @@
                 }
             });
 
-            trac.on('error', function(msg) {
+            trac.on('error', function (msg) {
                 console.error(msg);
                 document.getElementById(elementId).textContent = `Error calculating blocks since ${givenBlockNumber}.`;
             });

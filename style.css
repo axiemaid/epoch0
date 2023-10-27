@@ -281,7 +281,7 @@ td .content {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 60vh;
+top: 80px;
   max-width: 500px;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -581,3 +581,29 @@ td .content {
   object-fit: cover; /* Optional: Ensure the aspect ratio of the images is maintained */
   border-radius: 5px;
 }
+
+/* notification on address copy */
+
+#notification {
+  display: none; /* Initially hidden */
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+/* When the notification is active */
+#notification.active {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+

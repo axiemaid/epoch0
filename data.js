@@ -33,6 +33,13 @@ const tagsData = [
         TwitterUrl: "block9ine",
     },
     {
+        block: 54,
+        ownerUsername: "54.bitmap",
+        tags: ["jazz"],
+        imageUrls: ["images/54bitmap/54jazz.jpg"],
+        TwitterUrl: "Jazz32756635599",
+    },
+    {
         block: 65,
         ownerUsername: "Benbuiz",
         tags: ["ghb.eth", "ghb", "benbuiz"],
@@ -50,8 +57,9 @@ const tagsData = [
     },
     {
         block: 87,
-        tags: ["0xValue", "Value0x"],
-        imageUrls: [""],
+        ownerUsername: "0xValue",
+        tags: ["0xValue", "Value0x", "value"],
+        imageUrls: ["images/value/value.jpg"],
         TwitterUrl: "Value0x",
     },
     {
