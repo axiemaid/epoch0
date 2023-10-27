@@ -63,10 +63,11 @@
 
     <div class="content-container">
         <div id="pageContent">
-
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Explore here">
-                <div id="clearInputButton"><img src="images/icons/close.png"></div>
+            <div class="desktopSearchContainer">
+                <div id="searchContainer" class="search-container">
+                    <input type="text" id="searchInput" placeholder="Explore here">
+                    <div id="clearInputButton"><img src="images/icons/close.png"></div>
+                </div>
             </div>
 
             <div id="searchResults"></div>
@@ -176,7 +177,7 @@
             blockDetailDiv.style.display = 'block';
             blockDetailDiv.scrollTop = 0; // ensures new blockDetail starts at top of scroll
 
-
+            modifySearchInput(); // modifies search input field appearance
             closeContentDiv(); // closes any open trending div
             ShiftUpTable(); // add margin to page bottom when blockDisplay div is open
 
@@ -301,6 +302,7 @@
                 document.getElementById('closeButton').addEventListener('click', function () {
                     document.getElementById('blockDetails').style.display = 'none';
                     ShiftDownTable(); // Shift back down table upon close of BlockDetails div
+                    removeModifySearchInput(); // return input search field to normal appearance
                 });
 
             } else {
@@ -519,7 +521,7 @@
                         currentHighlightedCell = cell;
                     }
 
-                    scrollToResultItem(blockNumber);
+                    scrollToSearchResult(blockNumber);
                 });
             });
 
@@ -536,16 +538,16 @@
             return window.innerHeight - rect.bottom;
         }
 
-        // Scroll to 1/2 avail screen on table cell click
+        // Scroll to 1/2 entire screen on table cell click (modified from 1/2 avail screen for full blockDetail)
         function scrollUpFromBehind(cell) {
-            const blockDetailsHeight = document.getElementById('blockDetails').offsetHeight;
             const rect = cell.getBoundingClientRect();
 
-            const scrollPosition = rect.top + window.pageYOffset -
-                ((window.innerHeight - blockDetailsHeight - rect.height) / 2);
+            // Scroll such that the cell is at the middle of the viewport
+            const scrollPosition = rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2);
 
             window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
         }
+
 
         // Scrolls to 1/2 avail screen on searchResult
         // Modified for Android virtual keyboard issues
@@ -578,7 +580,7 @@
             });
         }
 
-        // Scrolls to 1/2 avail screen on searchResult item click
+        // RETIRED - replaced by scrollToSearchResult for full screen blockDetails - Scrolls to 1/2 avail screen on searchResult item click
         function scrollToResultItem(blockNumber) {
             const cell = getCellForBlock(blockNumber);
             const blockDetailsHeight = document.getElementById('blockDetails').offsetHeight;
@@ -798,7 +800,7 @@
 
                     if (blockNumber) {
                         displayBlockDetails(parseInt(blockNumber, 10));
-                        scrollToResultItem(blockNumber);
+                        scrollToSearchResult(blockNumber);
 
                         removeHighlightFromAllCells()
                         // Highlight the block cell directly 
@@ -859,6 +861,17 @@
         displayBlocksSince(813225, 'blockCount2'); // diamond co 8
         displayBlocksSince(813222, 'blockCount3'); // tbr atomicals 91
         // Add more function calls for other block numbers and element IDs
+
+        // -------------- change input search field to inset for when blockDetails open ------
+        function modifySearchInput() {
+            var element = document.getElementById("searchContainer");
+            element.classList.add("searchContainerBlockDisplay");
+        }
+
+        function removeModifySearchInput() {
+            var element = document.getElementById("searchContainer");
+            element.classList.remove("searchContainerBlockDisplay");
+        }
 
     </script>
 
