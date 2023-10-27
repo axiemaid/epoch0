@@ -51,7 +51,7 @@ const tagsData = [
         block: 67,
         ownerUsername: "CRFTD",
         tags: ["CRFTD", "art", "bLOCKHeadz", "City", "Pristine", "Punk" ],
-        imageUrls: ["images/crftd.png", "images/crftd/bitmap-city.jpg", "images/crftd/punkmap.jpg",],
+        imageUrls: ["images/crftd/crftd.png", "images/crftd/bitmap-city.jpg", "images/crftd/punkmap.jpg",],
         websiteUrl: "https://www.crftdla.com/", 
         TwitterUrl: "_CRFTD_",
     },
