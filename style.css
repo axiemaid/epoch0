@@ -374,6 +374,7 @@ td .content {
 .web-link-container a {
   text-decoration: none;
   color: black;
+  word-wrap: break-word;
 }
 
 .web-link-container img{
@@ -617,5 +618,34 @@ td .content {
   display: block;
   opacity: 1;
   visibility: visible;
+}
+
+/* error window close button*/
+
+.error-message-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.error-message {
+  margin-top: 80px;
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+.error-button {
+  background-color: white;
+  border: 1px solid #666;
+  cursor: pointer;
+  text-align: center;
+  width: 100px;
+  margin: 15px auto 0 auto;
+  padding: 5px 15px; 
+  border-radius: 3px;
+}
+
+.error-close-icon:before {
+  content: "X";
 }
 

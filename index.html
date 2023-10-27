@@ -89,12 +89,19 @@
         <div id="contentDiv">
             <div class="epoch-title">Latest in Epoch 0</div>
             <div class="trending-container">
+                <div class="trending-content" data-block-number="91">
+                    <img src="images/thumbnail/millionaire.jpg" class="trending-content-img">
+                    <div class="trending-content-title">The Millionaire Playbook</div>
+                    <div class="trending-content-owner">The Block Runner</div>
+                    <div class="trending-content-bitmap">91.bitmap</div>
+                    <div id="blockCount4" class="post-age">Loading...</div>
+                </div>
                 <div class="trending-content" data-block-number="722">
                     <img src="images/thumbnail/rcsv-goose.jpg" class="trending-content-img">
                     <div class="trending-content-title">Geese flock to RCSV</div>
                     <div class="trending-content-owner">林冲.btc</div>
                     <div class="trending-content-bitmap">722.bitmap</div>
-                    <div id="blockCount1" class="post-age">Loading...</div>
+                    <div id="blockCount3" class="post-age">Loading...</div>
                 </div>
                 <div class="trending-content" data-block-number="8">
                     <img src="images/thumbnail/bitmap-chron.jpg" class="trending-content-img">
@@ -108,7 +115,7 @@
                     <div class="trending-content-title">TBR interviews Atomicals</div>
                     <div class="trending-content-owner">The Block Runner</div>
                     <div class="trending-content-bitmap">91.bitmap</div>
-                    <div id="blockCount3" class="post-age">Loading...</div>
+                    <div id="blockCount1" class="post-age">Loading...</div>
                 </div>
             </div>
         </div>
@@ -267,7 +274,7 @@
                             ${YTUrl ? `
                         <div class="web-link-container">
                             <img src="images/icons/youtube.png">
-                            <a href="${YTUrl}" target="_blank">${YTUrl}</a>
+                            <a href="https://www.youtube.com/${YTUrl}" target="_blank">${YTUrl}</a>
                         </div>
                         ` : ''}
 
@@ -306,7 +313,14 @@
                 });
 
             } else {
-                blockDetailDiv.innerHTML = '<p>Details loading. No details available for this block.</p>';
+                blockDetailDiv.innerHTML =
+                    '<div class="error-message-container"><p class="error-message">Details loading. Please try again.</p><div id="error-close-icon" class="error-button">Close</div></div>';
+
+                document.getElementById('error-close-icon').addEventListener('click', function () {
+                    document.getElementById('blockDetails').style.display = 'none';
+                    ShiftDownTable(); // Shift back down table upon close of BlockDetails div
+                    removeModifySearchInput(); // return input search field to normal appearance
+                });
             }
         }
 
@@ -497,10 +511,16 @@
             if (resultsHtml) {
                 resultsHtml = '<div id="swipeBar"><img src="images/icons/down.png"></div>' + resultsHtml;
             } else {
-                resultsHtml = '<p>Sorry, no results found.</p>';
+                resultsHtml = '<div class="error-message-container"><p class="error-message">Sorry, no results found.</p><div id="error-close-searchResult" class="error-button">Close</div></div>';
             }
             resultsDiv.style.display = 'block';
             resultsDiv.innerHTML = resultsHtml;
+
+            // Add event listener for the error close button
+            const errorCloseButton = document.getElementById('error-close-searchResult');
+            if (errorCloseButton) {
+                errorCloseButton.addEventListener('click', closeSearchResults);
+            }
 
             ShiftUpTable();
             const swipeBar = document.getElementById('swipeBar');
@@ -857,9 +877,10 @@
         }
 
         // Call the function with the desired block numbers and element IDs
-        displayBlocksSince(813500, 'blockCount1'); // goosinals 722
+        displayBlocksSince(813979, 'blockCount4'); // millionaire 91
+        displayBlocksSince(813500, 'blockCount3'); // goosinals 722
         displayBlocksSince(813225, 'blockCount2'); // diamond co 8
-        displayBlocksSince(813222, 'blockCount3'); // tbr atomicals 91
+        displayBlocksSince(813222, 'blockCount1'); // tbr atomicals 91
         // Add more function calls for other block numbers and element IDs
 
         // -------------- change input search field to inset for when blockDetails open ------
@@ -872,6 +893,14 @@
             var element = document.getElementById("searchContainer");
             element.classList.remove("searchContainerBlockDisplay");
         }
+
+
+        // close search results on error 
+        function closeSearchResults() {
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.style.display = 'none';
+        }
+
 
     </script>
 
