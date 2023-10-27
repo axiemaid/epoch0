@@ -560,13 +560,13 @@
 
         // Scroll to 1/2 entire screen on table cell click (modified from 1/2 avail screen for full blockDetail)
         function scrollUpFromBehind(cell) {
-            const rect = cell.getBoundingClientRect();
+    const rect = cell.getBoundingClientRect();
 
-            // Scroll such that the cell is at the middle of the viewport
-            const scrollPosition = rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2);
+    // Scroll such that the cell is at the 25% of the viewport
+    const scrollPosition = rect.top + window.pageYOffset - (window.innerHeight * 0.25) + (rect.height / 2);
 
-            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-        }
+    window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+}
 
 
         // Scrolls to 1/2 avail screen on searchResult
