@@ -114,6 +114,14 @@ const tagsData = [
         TwitterUrl: "forsure_madix",
     },
     {
+        block: 383,
+        ownerUsername: "2satsmaxi",
+        tags: ["2satsmaxi", "twosatsmaxi", "2sats", "twosats", "two", "sats", "maxi"],
+        imageUrls: ["images/twosats/twosats.jpg"],
+        websiteUrl: "https://github.com/twosatsmaxi/",
+        TwitterUrl: "twosatsmaxi",
+    },
+    {
         block: 444,
         ownerUsername: "ET",
         tags: ["ET"],
